@@ -48,27 +48,20 @@
 		<?php include("topBoxes.php"); ?>
 		<h1>Web Auction</h1>
 			<br/>
-        
-        <p style="color:red"><?php
-	if(isset($_GET['error'])) {
-	if($_GET['error']==1){
-		echo "There was an error when removing that auction.";
-	}else if($_GET['error']==2){
-		echo "You do not have enough items.";
-	}else if($_GET['error']==3){
-		echo "Price was not a number.";
-	}else if($_GET['error']==4){
-		echo "Quantity was not an integer.";
-	}else if($_GET['error']==5){
-		echo "Quantity not a valid number.";
-	}else if($_GET['error']==6){
-		echo "Price not a valid number.";
-	}else if($_GET['error']==7){
-		echo "You don't have sell permissions.";
-	}
-	}
+        <p style="color:red"><?php 
+		if(isset($_SESSION['error']))
+        {
+            echo $_SESSION['error'];
+            unset($_SESSION['error']);
+	    }
 
-?></p>
+        ?></p><p style="color:green"><?php
+        if(isset($_SESSION['success']))
+        {
+            echo $_SESSION['success'];
+            unset($_SESSION['success']);
+        }
+        ?></p>
 		<?php if($canSell == true){ ?>
 		<div id="new-auction-box">
 <h2>Create a new auction</h2>

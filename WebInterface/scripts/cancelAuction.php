@@ -10,7 +10,6 @@
 	$queryAuctions=mysql_query("SELECT * FROM WA_Auctions WHERE id='$auctionId'");
 	list($id, $itemName, $itemDamage, $itemOwner, $itemQuantity, $itemPrice)= mysql_fetch_row($queryAuctions);
 	$itemOwner = trim($itemOwner);
-	//echo $itemOwner.":".$user;
 	if (strcasecmp($itemOwner,$user) == 0){
 		$queryPlayerItems =mysql_query("SELECT * FROM WA_Items WHERE player='$user'");
 		$foundItem = false;
@@ -37,8 +36,10 @@
 			$itemQuery = mysql_query("INSERT INTO WA_Items (name, damage, player, quantity) VALUES ('$itemName', '$itemDamage', '$user', '$itemQuantity')");
 		}
 		$itemDelete = mysql_query("DELETE FROM WA_Auctions WHERE id='$id'");
+		$_SESSION['success'] = 'Removed auction successfully');
 		header("Location: ../myauctions.php");
 	}else{
-		header("Location: ../myauctions.php?error=1");
+		$_SESSION['error'] = 'Error removing that auction.';
+		header("Location: ../myauctions.php");
 	}
 ?>

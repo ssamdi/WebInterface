@@ -17,7 +17,7 @@
 	/* Array of database columns which should be read and sent back to DataTables. Use a space where
 	 * you want to insert a non-database field (for example a counter or static image)
 	 */
-	$aColumns = array( 'name', 'damage', 'player', 'quantity', 'price', 'id');
+	$aColumns = array( 'name', 'damage', 'player', 'quantity', 'price', 'id', 'created');
 	
 	/* Indexed column (used for fast and accurate table cardinality) */
 	$sIndexColumn = "id";
@@ -160,7 +160,6 @@
 	$aResultTotal = mysql_fetch_array($rResultTotal);
 	$iTotal = $aResultTotal[0];
 	
-	
 	/*
 	 * Output
 	 */
@@ -175,52 +174,88 @@
 	while ( $aRow = mysql_fetch_array( $rResult ) )
 	{
 		$row = array();
-		$itemName = $aRow[ $aColumns[0] ];
-		$fullItemName = getItemName($aRow[ $aColumns[0] ], $aRow[ $aColumns[1] ]);
-		$itemDamage = $aRow[ $aColumns[1] ];
-		$marketPrice = getMarketPrice($itemName, $itemDamage);
-		if ($marketPrice > 0)
-		{
-			$marketPercent = round((($aRow[ $aColumns[4] ]/$marketPrice)*100), 1);
-		}
-		else
-		{
-			$marketPercent = "N/A";
-		}
-		if ($marketPercent == "N/A")
-		{
-		    $marketPercent = 0;
-			$grade = "gradeU";
-		}
-		else if ($marketPercent <= 50)
-		{
-			$grade = "gradeA";
-		}
-		else if ($marketPercent <= 150)
-		{
-			$grade = "gradeC";
-		}
-		else
-		{
-			$grade = "gradeX";
-		}
-		$row['DT_RowClass'] = $grade;
-		$row[] = "<a href='graph.php?name=".$aRow[ $aColumns[0] ]."&damage=".$aRow[ $aColumns[1] ]."'><img src=".getItemImage($aRow[ $aColumns[0] ], $aRow[ $aColumns[1] ])." alt=".$fullItemName."/><br/>".$fullItemName."</a>";
-		$row[] = "<img width='32px' src='scripts/mcface.php?user=".$aRow[ $aColumns[2] ]."' /><br/>".$aRow[ $aColumns[2] ];
-		$row[] = $aRow[ $aColumns[3] ];
-		$row[] = $aRow[ $aColumns[4] ];
-		$row[] = (((double)$aRow[ $aColumns[3] ])*((double)$aRow[ $aColumns[4] ]));
-		$row[] = $marketPercent;
+		$timeCreated = $aRow[ $aColumns[6] ];
+		if( time() < $timeCreated + $auctionDurationSec){
+			$itemName = $aRow[ $aColumns[0] ];
+			$fullItemName = getItemName($aRow[ $aColumns[0] ], $aRow[ $aColumns[1] ]);
+			$itemDamage = $aRow[ $aColumns[1] ];
+			$marketPrice = getMarketPrice($itemName, $itemDamage);
+			if ($marketPrice > 0)
+			{
+				$marketPercent = round((($aRow[ $aColumns[4] ]/$marketPrice)*100), 1);
+			}
+			else
+			{
+				$marketPercent = "N/A";
+			}
+			if ($marketPercent == "N/A")
+			{
+				$marketPercent = 0;
+				$grade = "gradeU";
+			}
+			else if ($marketPercent <= 50)
+			{
+				$grade = "gradeA";
+			}
+			else if ($marketPercent <= 150)
+			{
+				$grade = "gradeC";
+			}
+			else
+			{
+				$grade = "gradeX";
+			}
+			$row['DT_RowClass'] = $grade;
+			$row[] = "<a href='graph.php?name=".$aRow[ $aColumns[0] ]."&damage=".$aRow[ $aColumns[1] ]."'><img src=".getItemImage($aRow[ $aColumns[0] ], $aRow[ $aColumns[1] ])." alt=".$fullItemName."/><br/>".$fullItemName."</a>";
+			$row[] = "<img width='32px' src='scripts/mcface.php?user=".$aRow[ $aColumns[2] ]."' /><br/>".$aRow[ $aColumns[2] ];
+			$row[] = date('d/m/Y H:i:s', $timeCreated + $auctionDurationSec);
+			$row[] = $aRow[ $aColumns[3] ];
+			$row[] = $aRow[ $aColumns[4] ];
+			$row[] = (((double)$aRow[ $aColumns[3] ])*((double)$aRow[ $aColumns[4] ]));
+			$row[] = $marketPercent;
 		
-		if ($canBuy == true){
-			$row[] = "<form action='scripts/purchaseItem.php' method='post'><input type='text' name='Quantity' onKeyPress='return numbersonly(this, event)' class='input'><input type='hidden' name='ID' value='".$aRow[ $aColumns[5] ]."' /><input type='submit' value='Buy' class='button' /></form>";	
-		}else{
-			$row[] = "Can't Buy";
+			if ($canBuy == true){
+				$row[] = "<form action='scripts/purchaseItem.php' method='post'><input type='text' name='Quantity' onKeyPress='return numbersonly(this, event)' class='input'><input type='hidden' name='ID' value='".$aRow[ $aColumns[5] ]."' /><input type='submit' value='Buy' class='button' /></form>";	
+			}else{
+				$row[] = "Can't Buy";
+			}
+			if ($isAdmin == true){ 
+				$row[] = "<td><a class='button' href='scripts/cancelAuctionAdmin.php?id=".$aRow[ $aColumns[5] ]."'>Cancel</a></td>";
+			}
+			$output['aaData'][] = $row;
+		}else
+		{
+			$user = $aRow[ $aColumns[2] ];
+			$id = $aRow[ $aColumns[5] ];
+			$itemName = $aRow[ $aColumns[0] ];
+			$itemDamage = $aRow[ $aColumns[1] ];
+			$itemQuantity = $aRow[ $aColumns[3] ];
+			$queryPlayerItems =mysql_query("SELECT * FROM WA_Items WHERE player='$user'");
+			$foundItem = false;
+			$stackId = 0;
+			$stackQuant = 0;
+			while(list($pid, $pitemName, $pitemDamage, $pitemOwner, $pitemQuantity)= mysql_fetch_row($queryPlayerItems))
+			{	
+				if($itemName == $pitemName)
+				{
+					if ($pitemDamage == $itemDamage)
+					{
+						$foundItem = true;
+						$stackId = $pid;
+						$stackQuant = $pitemQuantity;
+					}
+				}
+			}
+			if ($foundItem == true)
+			{
+				$newQuantity = $itemQuantity + $stackQuant;
+				$itemQuery = mysql_query("UPDATE WA_Items SET quantity='$newQuantity' WHERE id='$stackId'");
+			}else
+			{
+				$itemQuery = mysql_query("INSERT INTO WA_Items (name, damage, player, quantity) VALUES ('$itemName', '$itemDamage', '$user', '$itemQuantity')");
+			}
+			$itemDelete = mysql_query("DELETE FROM WA_Auctions WHERE id='$id'");
 		}
-		if ($isAdmin == true){ 
-			$row[] = "<td><a class='button' href='scripts/cancelAuctionAdmin.php?id=".$aRow[ $aColumns[5] ]."'>Cancel</a></td>";
-		}
-		$output['aaData'][] = $row;
 	}
 	echo json_encode( $output );
 ?>

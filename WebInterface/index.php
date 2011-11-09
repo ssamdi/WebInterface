@@ -6,7 +6,10 @@
 	$user = $_SESSION['User'];
 	require 'scripts/config.php';
 	require 'scripts/itemInfo.php';
+	require 'classes/EconAccount.php';
 	require 'scripts/updateTables.php';
+	require 'scripts/chargeStorage.php';
+	
 	$isAdmin = $_SESSION['Admin'];
 	$canBuy = $_SESSION['canBuy'];
 	$queryAuctions=mysql_query("SELECT * FROM WA_Auctions");
@@ -23,7 +26,7 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<link rel="shortcut icon" type="image/ico" href="http://www.datatables.net/media/images/favicon.ico" />
+		<link rel="shortcut icon" type="image/ico" href="favicon.ico" />
 		
 		<title>WebAuction</title>
 		<style type="text/css" title="currentStyle">
@@ -73,11 +76,12 @@
 		<tr>
 			<th>Item</th>
 			<th>Seller</th>
+			<th>Expires</th>
             <th>Quantity</th>
             <th>Price (Each)</th>
 			<th>Price (Total)</th>	
 			<th>% of Market Price</th>
-			<th>Buy (leave blank to buy all)</th>
+			<th>Buy</th>
 			<?php if ($isAdmin == true){ ?>
 				<th>Cancel</th>
 			<?php } ?>

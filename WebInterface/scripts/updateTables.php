@@ -1,12 +1,15 @@
 <?php
-	add_column_if_not_exist("WA_SellPrice", "seller");
-	add_column_if_not_exist("WA_SellPrice", "buyer");
-	add_column_if_not_exist2("WA_Players", "canBuy");
-	add_column_if_not_exist2("WA_Players", "canSell");
-	add_column_if_not_exist2("WA_Players", "isAdmin");
+    $now = time();
+	
+	add_column_if_not_exist("WA_SellPrice", "seller", "VARCHAR( 255 ) NULL");
+	add_column_if_not_exist("WA_SellPrice", "buyer", "VARCHAR( 255 ) NULL");
+	add_column_if_not_exist("WA_Players", "canBuy", "INT(11) NOT NULL DEFAULT  '0'");
+	add_column_if_not_exist("WA_Players", "canSell", "INT(11) NOT NULL DEFAULT  '0'");
+	add_column_if_not_exist("WA_Players", "isAdmin", "INT(11) NOT NULL DEFAULT  '0'");
+	add_column_if_not_exist("WA_Auctions", "created", "INT(11) NULL");
 
 
-function add_column_if_not_exist($table, $column, $column_attr = "VARCHAR( 255 ) NULL" ){
+function add_column_if_not_exist($table, $column, $column_attr){
     $exists = false;
     $columns = mysql_query("show columns from $table");
     while($c = mysql_fetch_assoc($columns)){
@@ -20,17 +23,4 @@ function add_column_if_not_exist($table, $column, $column_attr = "VARCHAR( 255 )
     }
 }
 
-function add_column_if_not_exist2($table, $column, $column_attr = "INT(11) NOT NULL DEFAULT  '0'" ){
-    $exists = false;
-    $columns = mysql_query("show columns from $table");
-    while($c = mysql_fetch_assoc($columns)){
-        if($c['Field'] == $column){
-            $exists = true;
-            break;
-        }
-    }      
-    if(!$exists){
-        mysql_query("ALTER TABLE `$table` ADD `$column`  $column_attr");
-    }
-}
 ?>

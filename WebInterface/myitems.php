@@ -71,7 +71,7 @@
 	<?php
 	while(list($id, $name, $damage, $player, $quantity)= mysql_fetch_row($queryItems))
     { 
-		$marketPrice = getMarketPrice($name, $damage, $marketTimeMin);
+		$marketPrice = getMarketPrice($name, $damage);
 		$marketTotal = $marketPrice*$quantity;
 		if ($marketPrice == 0)
 		{
