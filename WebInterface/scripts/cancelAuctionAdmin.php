@@ -38,7 +38,7 @@
 			$itemQuery = mysql_query("INSERT INTO WA_Items (name, damage, player, quantity) VALUES ('$itemName', '$itemDamage', '$itemOwner', '$itemQuantity')");
 		}
 		$itemDelete = mysql_query("DELETE FROM WA_Auctions WHERE id='$id'");
-		$_SESSION['success'] = 'Removed auction successfully');
+		$_SESSION['success'] = 'Removed auction successfully';
 		header("Location: ../index.php");
 	}else{
 		$_SESSION['error'] = 'Error removing that auction.';
