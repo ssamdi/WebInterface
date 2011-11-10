@@ -64,7 +64,7 @@
 							$twitter = new Twitter($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret);
 							$twitter->send('[WA] Auction Created: '.$user.' is selling '.$sellQuantity.' x '.$itemFullName.' for '.$currencyPrefix.$sellPrice.$currencyPostfix.' each. At '.date("H:i:s").'. '.$shortLinkToAuction.' #webauction');
 						}
-						$_SESSION['success'] = "You auctioned $sellQuantity $itemFullName for ".$currencyPrefix.$totalPrice.$currencyPostfix.", the fee was ".$currencyPrefix.$itemFee.$currencyPostfix;
+						$_SESSION['success'] = "You auctioned $sellQuantity $itemFullName for ".$currencyPrefix.$sellPrice.$currencyPostfix." each, the fee was ".$currencyPrefix.$itemFee.$currencyPostfix;
 						header("Location: ../myauctions.php");
 					}else
 					{

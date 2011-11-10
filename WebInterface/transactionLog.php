@@ -26,9 +26,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<link rel="shortcut icon" type="image/ico" href="http://www.datatables.net/media/images/favicon.ico" />
-		
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />		
 		<title>WebAuction</title>
 		<style type="text/css" title="currentStyle">
 			@import "css/table_jui.css";
@@ -116,7 +114,7 @@
         <tr class="<?php echo $grade ?>">
 			<td><?php echo $timeFormat ?></td>
 			<td><a href="graph.php?name=<?php echo $name."&damage=".$damage ?>"><img src="<?php echo getItemImage($name, $damage) ?>" alt="<?php echo getItemName($name, $damage) ?>"/><br/><?php echo getItemName($name, $damage) ?></a></td>
-			<td><img width="32px" src="scripts/mcface.php?user=<?php echo $seller ?>" /><br/><?php echo $seller ?></td>
+			<td><img width="32px" src="http://minotar.net/avatar/<?php echo $seller ?>" /><br/><?php echo $seller ?></td>
           <td><?php echo $quantity ?></td>
           <td class="center"><?php echo $price ?></td>
 			<td class="center"><?php echo $price*$quantity ?></td>
@@ -180,7 +178,7 @@
         <tr class="<?php echo $grade ?>">
 			<td><?php echo $timeFormat ?></td>
 			<td><a href="graph.php?name=<?php echo $name."&damage=".$damage ?>"><img src="<?php echo getItemImage($name, $damage) ?>" alt="<?php echo getItemName($name, $damage) ?>"/><br/><?php echo getItemName($name, $damage) ?></a></td>
-			<td><img width="32px" src="scripts/mcface.php?user=<?php echo $buyer ?>" /><br/><?php echo $buyer ?></td>
+			<td><img width="32px" src="http://minotar.net/avatar/<?php echo $buyer ?>" /><br/><?php echo $buyer ?></td>
           <td><?php echo $quantity ?></td>
           <td class="center"><?php echo $price ?></td>
 			<td class="center"><?php echo $price*$quantity ?></td>

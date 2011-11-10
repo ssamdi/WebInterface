@@ -207,7 +207,7 @@
 			}
 			$row['DT_RowClass'] = $grade;
 			$row[] = "<a href='graph.php?name=".$aRow[ $aColumns[0] ]."&damage=".$aRow[ $aColumns[1] ]."'><img src=".getItemImage($aRow[ $aColumns[0] ], $aRow[ $aColumns[1] ])." alt=".$fullItemName."/><br/>".$fullItemName."</a>";
-			$row[] = "<img width='32px' src='scripts/mcface.php?user=".$aRow[ $aColumns[2] ]."' /><br/>".$aRow[ $aColumns[2] ];
+			$row[] = "<img width='32px' src='http://minotar.net/avatar/".$aRow[ $aColumns[2] ]."' /><br/>".$aRow[ $aColumns[2] ];
 			$row[] = date('d/m/Y H:i:s', $timeCreated + $auctionDurationSec);
 			$row[] = $aRow[ $aColumns[3] ];
 			$row[] = $aRow[ $aColumns[4] ];

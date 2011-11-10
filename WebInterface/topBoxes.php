@@ -2,7 +2,7 @@
 		<table cellspacing="3px">
 		<tr>
 		<td>
-		<img width="64px" src="scripts/mcface.php?user=<?php echo $user ?>" />
+		<img width="64px" src="http://minotar.net/avatar/<?php echo $user ?>" />
 		</td>
 		<td>
         <p>Name: &nbsp;&nbsp;<?php echo $user?><?php if ($isAdmin == "true"){ echo " ADMIN"; } ?><br/>
