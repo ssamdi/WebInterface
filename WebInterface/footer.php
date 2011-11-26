@@ -5,7 +5,7 @@
 
 
 <p>
-	Made by Exote. WebAuction v0.4<br/>
+	Made by Exote. WebAuction v0.5<br/>
     For more usage info visit the <a href="http://dev.bukkit.org/server-mods/webauction">BukkitDev site</a>.
 </p>
 </div>
