@@ -15,7 +15,8 @@
 	
 	if ($now > $checkRow[1])
 	{	
-		//echo "Time to check!<br/>";
+		//Stored in my items"
+		
 		$queryPlayers=mysql_query("SELECT DISTINCT player FROM WA_Items");
 		$players = array();
 		while(list($player)= mysql_fetch_row($queryPlayers))
@@ -28,9 +29,25 @@
 			$cost = $quantity * ($costPerItemPerDay / $numberOfChecksPerDay);
 			$players[$player] += $cost;
 		}
-		//echo "<pre>";
-		//print_r($players);
-		//echo "</pre>";
+		foreach ($players as $p => $v) {
+			$account = new EconAccount($p, $useMySQLiConomy, $iConTableName);
+			$account->money = $account->money - $v;
+		}
+		
+		//Stored in mail box
+		
+		$queryPlayers=mysql_query("SELECT DISTINCT player FROM WA_Mail");
+		$players = array();
+		while(list($player)= mysql_fetch_row($queryPlayers))
+		{
+			$players[$player] = 0;
+		}
+		$queryItems=mysql_query("SELECT * FROM WA_Mail");
+		while(list($id, $name, $damage, $player, $quantity)= mysql_fetch_row($queryItems))
+		{
+			$cost = $quantity * ($costPerItemPerDay / $numberOfChecksPerDay);
+			$players[$player] += $cost;
+		}
 		foreach ($players as $p => $v) {
 			$account = new EconAccount($p, $useMySQLiConomy, $iConTableName);
 			$account->money = $account->money - $v;

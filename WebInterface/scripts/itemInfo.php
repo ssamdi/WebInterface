@@ -543,7 +543,18 @@
 				return "Silverfish Stone";
 				break;
 			case 98:
-				return "Stone Brick";
+				switch ($itemDamage)
+				{
+					case 1:
+						return "Mossy Stone Brick";
+						break;
+					case 2:
+						return "Cracked Stone Brick";
+						break;
+					default:
+						return "Stone Brick";
+						break;
+				}
 				break;
 			case 99:
 				return "Brown Mushroom Cap";
@@ -577,6 +588,45 @@
 				break;
 			case 109:
 				return "Stone Brick Stairs";
+				break;
+			case 110:
+				return "Mycelium";
+				break;
+			case 111:
+				return "Lily Pad";
+				break;
+			case 112:
+				return "Nether Brick";
+				break;
+			case 113:
+				return "Nether Brick Fence";
+				break;
+			case 114:
+				return "Nether Brick Stairs";
+				break;
+			case 115:
+				return "Nether Wart";
+				break;
+			case 116:
+				return "Enchantment Table";
+				break;
+			case 117:
+				return "Brewing Stand (Block)";
+				break;
+			case 118:
+				return "Cauldron (Block)";
+				break;
+			case 119:
+				return "End Portal";
+				break;
+			case 120:
+				return "End Portal Frame";
+				break;
+			case 121:
+				return "End Stone";
+				break;
+			case 122:
+				return "Dragon Egg";
 				break;
 			case 256:
 				return "Iron Shovel ".round(($itemDamage/251)*100, 1)."% damaged";
@@ -975,11 +1025,226 @@
 			case 368:
 				return "Ender Pearl";
 				break;
+			case 369:
+				return "Blaze Rod";
+				break;
+			case 370:
+				return "Ghast Tear";
+				break;
+			case 371:
+				return "Gold Nugget";
+				break;
+			case 372:
+				return "Nether Wart Seeds";
+				break;
+			case 373:
+				switch ($itemDamage)
+				{
+					case 0:
+						return "Water Bottle";
+						break;
+					case 16:
+						return "Awkward Potion";
+						break;
+					case 32:
+						return "Thick Potion";
+						break;
+					case 64:
+						return "Mundane Potion";
+						break;
+					case 8193:
+						return "Regeneration Potion (0.45)";
+						break;
+					case 8194:
+						return "Swiftness Potion (3.00)";
+						break;
+					case 8195:
+						return "Fire Resistance Potion (3.00)";
+						break;
+					case 8196:
+						return "Poison Potion (0.45)";
+						break;
+					case 8197:
+						return "Healing Potion";
+						break;
+					case 8200:
+						return "Weakness Potion (1.30)";
+						break;
+					case 8201:
+						return "Strength Potion (3.00)";
+						break;
+					case 8202:
+						return "Slowness Potion (1.30)";
+						break;
+					case 8204:
+						return "Harming Potion";
+						break;
+					case 8225:
+						return "Regeneration Potion II (0.22)";
+						break;
+					case 8226:
+						return "Swiftness Potion II (1.30)";
+						break;
+					case 8228:
+						return "Poison Potion II (0.22)";
+						break;
+					case 8229:
+						return "Healing Potion II";
+						break;
+					case 8233:
+						return "Strength Potion II (1.30)";
+						break;
+					case 8236:
+						return "Harming Potion II";
+						break;
+					case 8257:
+						return "Regeneration Potion (2.00)";
+						break;
+					case 8258:
+						return "Swiftness Potion (8.00)";
+						break;
+					case 8260:
+						return "Poison Potion (2.00)";
+						break;
+					case 8264:
+						return "Weakness Potion (4.00)";
+						break;
+					case 8265:
+						return "Strength Potion (8.00)";
+						break;
+					case 8266:
+						return "Slowness Potion (4.00)";
+						break;
+					case 16378:
+						return "Fire Resistance Splash (2.15)";
+						break;
+					case 16385:
+						return "Regeneration Splash (0.33)";
+						break;
+					case 16386:
+						return "Swiftness Splash (2.15)";
+						break;
+					case 16388:
+						return "Poison Splash (0.33)";
+						break;
+					case 16389:
+						return "Healing Splash";
+						break;
+					case 16392:
+						return "Weakness Splash (1.07)";
+						break;
+					case 16393:
+						return "Strength Splash (2.15)";
+						break;
+					case 16394:
+						return "Slowness Splash (2.15)";
+						break;
+					case 16396:
+						return "Harming Splash";
+						break;
+					case 16418:
+						return "Swiftness Splash II (1.07)";
+						break;
+					case 16420:
+						return "Poison Splash II (0.16)";
+						break;
+					case 16421:
+						return "Healing Splash II";
+						break;
+					case 16425:
+						return "Strength Splash II (1.07)";
+						break;
+					case 16428:
+						return "Harming Splash II";
+						break;
+					case 16449:
+						return "Regeneration Splash (1.30)";
+						break;
+					case 16450:
+						return "Swiftness Splash (6.00)";
+						break;
+					case 16451:
+						return "Fire Resistance Splash (6.00)";
+						break;
+					case 16452:
+						return "Poison Splash (1.30)";
+						break;
+					case 16456:
+						return "Weakness Splash (3.00)";
+						break;
+					case 16457:
+						return "Strength Splash (6.00)";
+						break;
+					case 16458:
+						return "Slowness Splash (3.00)";
+						break;
+					case 16471:
+						return "Regeneration Splash II (0.16)";
+						break;
+					default:
+						return "Clear Potion";
+						break;
+				}
+				break;
+			case 374:
+				return "Glass Bottle";
+				break;
+			case 375:
+				return "Spider Eye";
+				break;
+			case 376:
+				return "Fermented Spider Eye";
+				break;
+			case 377:
+				return "Blaze Powder";
+				break;
+			case 378:
+				return "Magma Cream";
+				break;
+			case 379:
+				return "Brewing Stand";
+				break;
+			case 380:
+				return "Cauldron";
+				break;
+			case 381:
+				return "Eye of Ender";
+				break;
+			case 382:
+				return "Glistering Melon (Slice)";
+				break;
 			case 2256:
-				return "Gold Music Disc";
+				return "Music Disc (13)";
 				break;
 			case 2257:
-				return "Green Music Disc";
+				return "Music Disc (Cat)";
+				break;
+			case 2258:
+				return "Music Disc (Blocks)";
+				break;
+			case 2259:
+				return "Music Disc (Chirp)";
+				break;
+			case 2260:
+				return "Music Disc (Far)";
+				break;
+			case 2261:
+				return "Music Disc (Mall)";
+				break;
+			case 2262:
+				return "Music Disc (Mellohi)";
+				break;
+			case 2263:
+				return "Music Disc (Stal)";
+				break;
+			case 2264:
+				return "Music Disc (Strad)";
+				break;
+			case 2265:
+				return "Music Disc (Ward)";
+				break;
+			case 2266:
+				return "Music Disc (11)";
 				break;
 			default:
 				return "air";
@@ -1204,10 +1469,10 @@
 				return "images/Grid_Rose.png";
 				break;
 			case 39:
-				return "images/Crafting_square_Brown_Mushroom.png";
+				return "images/Grid_Brown_Mushroom.png";
 				break;
 			case 40:
-				return "images/Crafting_square_Red_Mushroom.png";
+				return "images/Grid_Red_Mushroom.png";
 				break;
 			case 41:
 				return "images/Grid_Gold_%28Block%29.png";
@@ -1412,6 +1677,18 @@
 				break;
 			case 98:
 				return "images/Grid_Stone_Brick.png";
+				switch ($itemDamage)
+				{
+					case 1:
+						return "images/Grid_Mossy_Stone_Brick.png";
+						break;
+					case 2:
+						return "images/Grid_Cracked_Stone_Brick.png";
+						break;
+					default:
+						return "images/Grid_Stone_Brick.png";
+						break;
+					}
 				break;
 			case 99:
 				return "images/Grid_Brown_Mushroom.png";
@@ -1446,6 +1723,45 @@
 			case 109:
 				return "images/Grid_Stone_Brick_Stairs.png";
 				break;
+			case 110:
+				return "images/Grid_Mycelium.png";
+				break;
+			case 111:
+				return "images/Grid_Lily_Pad.png";
+				break;
+			case 112:
+				return "images/Grid_Nether_Brick.png";
+				break;
+			case 113:
+				return "images/Grid_Nether_Brick_Fence.png";
+				break;
+			case 114:
+				return "images/Grid_Nether_Brick_Stairs.png";
+				break;
+			case 115:
+				return "images/Grid_Nether_Wart_Seeds.png";
+				break;
+			case 116:
+				return "images/Grid_Enchantment_Table.png";
+				break;
+			case 117:
+				return "images/Grid_Brewing_Stand.png";
+				break;
+			case 118:
+				return "images/Grid_Cauldron.png";
+				break;
+			case 119:
+				return "images/Grid_End_Portal.png";
+				break;
+			case 120:
+				return "images/Grid_End_Portal_Frame.png";
+				break;
+			case 121:
+				return "images/Grid_End_Stone.png";
+				break;
+			case 122:
+				return "images/Grid_Dragon_Egg.png";
+				break;
 			case 256:
 				return "images/Grid_Iron_Shovel.png";
 				break;
@@ -1459,7 +1775,7 @@
 				return "images/Grid_Flint_and_Steel.png";
 				break;
 			case 260:
-				return "images/Crafting_square_Red_Apple.png";
+				return "images/Grid_Red_Apple.png";
 				break;
 			case 261:
 				return "images/Grid_Bow.png";
@@ -1575,10 +1891,10 @@
 				return "images/Grid_Seeds.png";
 				break;
 			case 296:
-				return "images/Crafting_square_Wheat.png";
+				return "images/Grid_Wheat.png";
 				break;
 			case 297:
-				return "images/Crafting_square_Bread.png";
+				return "images/Grid_Bread.png";
 				break;
 			case 298:
 				return "images/Grid_Leather_Cap.png";
@@ -1644,16 +1960,16 @@
 				return "images/Grid_Flint.png";
 				break;
 			case 319:
-				return "images/Crafting_square_Raw_Porkchop.png";
+				return "images/Grid_Raw_Porkchop.png";
 				break;
 			case 320:
-				return "images/Crafting_square_Cooked_Porkchop.png";
+				return "images/Grid_Cooked_Porkchop.png";
 				break;
 			case 321:
 				return "images/Grid_Painting.png";
 				break;
 			case 322:
-				return "images/Crafting_square_Golden_Apple.png";
+				return "images/Grid_Golden_Apple.png";
 				break;
 			case 323:
 				return "images/Grid_Sign.png";
@@ -1692,7 +2008,7 @@
 				return "images/Grid_Leather.png";
 				break;
 			case 335:
-				return "images/Crafting_square_Milk.png";
+				return "images/Grid_Milk_Bucket.png";
 				break;
 			case 336:
 				return "images/Grid_Clay_%28Brick%29.png";
@@ -1719,7 +2035,7 @@
 				return "images/Grid_Minecart_with_Furnace.png";
 				break;
 			case 344:
-				return "images/Crafting_square_Egg.png";
+				return "images/Grid_Egg.png";
 				break;
 			case 345:
 				return "images/Grid_Compass.png";
@@ -1734,10 +2050,10 @@
 				return "images/Grid_Glowstone_%28Dust%29.png";
 				break;
 			case 349:
-				return "images/Crafting_square_Raw_Fish.png";
+				return "images/Grid_Raw_Fish.png";
 				break;
 			case 350:
-				return "images/Crafting_square_Cooked_Fish.png";
+				return "images/Grid_Cooked_Fish.png";
 				break;
 			case 351:
 				switch ($itemDamage)
@@ -1843,11 +2159,226 @@
 			case 368:
 				return "images/Grid_Ender_Pearl.png";
 				break;
+			case 369:
+				return "images/Grid_Blaze_Rod.png";
+				break;
+			case 370:
+				return "images/Grid_Ghast_Tear.png";
+				break;
+			case 371:
+				return "images/Grid_Gold_Nugget.png";
+				break;
+			case 372:
+				return "images/Grid_Grid_Nether_Ward_Seeds.png";
+				break;
+			case 373:
+				switch ($itemDamage)
+				{
+					case 0:
+						return "images/Grid_Water_Bottle.png";
+						break;
+					case 16:
+						return "images/Grid_Awkward_Potion.png";
+						break;
+					case 32:
+						return "images/Grid_Thick_Potion.png";
+						break;
+					case 64:
+						return "images/Grid_Mundane_Potion.png";
+						break;
+					case 8193:
+						return "images/Grid_Potion_of_Regeneration.png";
+						break;
+					case 8194:
+						return "images/Grid_Potion_of_Swiftness.png";
+						break;
+					case 8195:
+						return "images/Grid_Potion_of_Fire_Resistance.png";
+						break;
+					case 8196:
+						return "images/Grid_Potion_of_Poison.png";
+						break;
+					case 8197:
+						return "images/Grid_Instant_Health.png";
+						break;
+					case 8200:
+						return "images/Grid_Potion_of_Poison.png";
+						break;
+					case 8201:
+						return "images/Grid_Potion_of_Strength.png";
+						break;
+					case 8202:
+						return "images/Grid_Potion_of_Slowness.png";
+						break;
+					case 8204:
+						return "images/Grid_Potion_of_Harming.png";
+						break;
+					case 8225:
+						return "images/Grid_Potion_of_Regeneration.png";
+						break;
+					case 8226:
+						return "images/Grid_Potion_of_Swiftness.png";
+						break;
+					case 8228:
+						return "images/Grid_Potion_of_Poison.png";
+						break;
+					case 8229:
+						return "images/Grid_Instant_Health.png";
+						break;
+					case 8233:
+						return "images/Grid_Potion_of_Strength.png";
+						break;
+					case 8236:
+						return "images/Grid_Potion_of_Harming.png";
+						break;
+					case 8257:
+						return "images/Grid_Potion_of_Regeneration.png";
+						break;
+					case 8258:
+						return "images/Grid_Potion_of_Swiftness.png";
+						break;
+					case 8260:
+						return "images/Grid_Potion_of_Poison.png";
+						break;
+					case 8264:
+						return "images/Grid_Potion_of_Weakness.png";
+						break;
+					case 8265:
+						return "images/Grid_Potion_of_Strength.png";
+						break;
+					case 8266:
+						return "images/Grid_Potion_of_Slowness.png";
+						break;
+					case 16378:
+						return "Fire Resistance Splash (2.15)";
+						break;
+					case 16385:
+						return "Regeneration Splash (0.33)";
+						break;
+					case 16386:
+						return "Swiftness Splash (2.15)";
+						break;
+					case 16388:
+						return "Poison Splash (0.33)";
+						break;
+					case 16389:
+						return "Healing Splash";
+						break;
+					case 16392:
+						return "Weakness Splash (1.07)";
+						break;
+					case 16393:
+						return "Strength Splash (2.15)";
+						break;
+					case 16394:
+						return "Slowness Splash (2.15)";
+						break;
+					case 16396:
+						return "Harming Splash";
+						break;
+					case 16418:
+						return "Swiftness Splash II (1.07)";
+						break;
+					case 16420:
+						return "Poison Splash II (0.16)";
+						break;
+					case 16421:
+						return "Healing Splash II";
+						break;
+					case 16425:
+						return "Strength Splash II (1.07)";
+						break;
+					case 16428:
+						return "Harming Splash II";
+						break;
+					case 16449:
+						return "Regeneration Splash (1.30)";
+						break;
+					case 16450:
+						return "Swiftness Splash (6.00)";
+						break;
+					case 16451:
+						return "Fire Resistance Splash (6.00)";
+						break;
+					case 16452:
+						return "Poison Splash (1.30)";
+						break;
+					case 16456:
+						return "Weakness Splash (3.00)";
+						break;
+					case 16457:
+						return "Strength Splash (6.00)";
+						break;
+					case 16458:
+						return "Slowness Splash (3.00)";
+						break;
+					case 16471:
+						return "Regeneration Splash II (0.16)";
+						break;
+					default:
+						return "images/Grid_Water_Bottle.png";
+						break;
+				}
+				break;
+			case 374:
+				return "images/Grid_Glass_Bottle.png";
+				break;
+			case 375:
+				return "images/Grid_Spider_Eye.png";
+				break;
+			case 376:
+				return "images/Grid_Fermented_Spider_Eye.png";
+				break;
+			case 377:
+				return "images/Grid_Blaze_Powder.png";
+				break;
+			case 378:
+				return "images/Grid_Magma_Cream.png";
+				break;
+			case 379:
+				return "images/Grid_Brewing_Stand.png";
+				break;
+			case 380:
+				return "images/Grid_Cauldron.png";
+				break;
+			case 381:
+				return "images/Grid_Eye_of_Ender.png";
+				break;
+			case 382:
+				return "images/Grid_Glistering_Melon.png";
+				break;
 			case 2256:
 				return "images/Grid_Gold_Disc.png";
 				break;
 			case 2257:
 				return "images/Grid_Green_Disc.png";
+				break;
+			case 2258:
+				return "images/Grid_Blocks_Disc.png";
+				break;
+			case 2259:
+				return "images/Grid_Chirp_Disc.png";
+				break;
+			case 2260:
+				return "images/Grid_Far_Disc.png";
+				break;
+			case 2261:
+				return "images/Grid_Mall_Disc.png";
+				break;
+			case 2262:
+				return "images/Grid_Mellohi_Disc.png";
+				break;
+			case 2263:
+				return "images/Grid_Stal_Disc.png";
+				break;
+			case 2264:
+				return "images/Grid_Strad_Disc.png";
+				break;
+			case 2265:
+				return "images/Grid_Ward_Disc.png";
+				break;
+			case 2266:
+				return "images/Grid_11_Disc.png";
 				break;
 			default:
 				return "air";
