@@ -25,7 +25,15 @@
 	list($id, $itemName, $itemDamage, $itemOwner, $itemQuantity, $itemPrice)= mysql_fetch_row($queryAuctions);
 
     $owner = new EconAccount($itemOwner, $useMySQLiConomy, $iConTableName);
-
+	$queryEnchantLinks = mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemId = '$itemId' AND itemTableId = '1'");
+		//return mysql_num_rows($queryEnchantLinks);
+	$itemEnchantsArray = array ();
+		
+	while(list($idt, $enchIdt, $itemTableIdt, $itemIdt)= mysql_fetch_row($queryEnchantLinks))
+	{  
+		$itemEnchantsArray[] = $enchIdt;
+			
+	}
 
 
     if (is_numeric($_POST['Quantity']) AND $_POST['Quantity'] != 0)
@@ -68,11 +76,35 @@
 				{
 					$buyQuantity -= $maxStack;
 					$itemQuery = mysql_query("INSERT INTO WA_Mail (name, damage, player, quantity) VALUES ('$itemName', '$itemDamage', '$user', '$maxStack')");
+					$queryLatestAuction = mysql_query("SELECT id FROM WA_Mail ORDER BY id DESC");
+					list($latestId)= mysql_fetch_row($queryLatestAuction);
+					$queryEnchantLinks=mysql_query("SELECT enchId FROM WA_EnchantLinks WHERE itemId='$itemId' AND itemTableId=1"); 
+					while(list($enchId)= mysql_fetch_row($queryEnchantLinks))
+					{ 
+						$queryEnchants=mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemId='$itemId' AND itemTableId ='1'"); 
+						while(list($idk,$enchIdk, $tableIdk, $itemIdk)= mysql_fetch_row($queryEnchants))
+						{ 
+							$updateEnch = mysql_query("INSERT INTO WA_EnchantLinks (enchId, itemTableId, itemId) VALUES ('$enchIdk', '2', '$latestId')");
+						}
+					}
 				}
 				if ($buyQuantity > 0)
 				{
 					$itemQuery = mysql_query("INSERT INTO WA_Mail (name, damage, player, quantity) VALUES ('$itemName', '$itemDamage', '$user', '$buyQuantity')");
+					$queryLatestAuction = mysql_query("SELECT id FROM WA_Mail ORDER BY id DESC");
+					list($latestId)= mysql_fetch_row($queryLatestAuction);
+					$queryEnchantLinks=mysql_query("SELECT enchId FROM WA_EnchantLinks WHERE itemId='$itemId' AND itemTableId=1"); 
+					while(list($enchId)= mysql_fetch_row($queryEnchantLinks))
+					{ 
+						$queryEnchants=mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemId='$itemId' AND itemTableId ='1'"); 
+						while(list($idk,$enchIdk, $tableIdk, $itemIdk)= mysql_fetch_row($queryEnchants))
+						{ 
+							$updateEnch = mysql_query("INSERT INTO WA_EnchantLinks (enchId, itemTableId, itemId) VALUES ('$enchIdk', '2', '$latestId')");
+						}
+					}
 				}
+				$queryLatestAuction = mysql_query("SELECT id FROM WA_Mail ORDER BY id DESC");
+				list($latestId)= mysql_fetch_row($queryLatestAuction);
 			}else{
 				$queryPlayerItems =mysql_query("SELECT * FROM WA_Items WHERE player='$user'");
 				$foundItem = false;
@@ -84,9 +116,17 @@
 					{
 						if ($pitemDamage == $itemDamage)
 						{
-							$foundItem = true;
-							$stackId = $pid;
-							$stackQuant = $pitemQuantity;
+							$queryEnchantLinksMarket = mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemTableId = '0' AND itemId = '$pid'");
+							$marketEnchantsArray = array ();
+							while(list($idt, $enchIdt, $itemTableIdt, $itemIdt)= mysql_fetch_row($queryEnchantLinksMarket))
+							{  
+								$marketEnchantsArray[] = $enchIdt;
+							}	
+							if((array_diff($itemEnchantsArray, $marketEnchantsArray) == null)&&(array_diff($marketEnchantsArray, $itemEnchantsArray) == null)){
+								$foundItem = true;
+								$stackId = $pid;
+								$stackQuant = $pitemQuantity;
+							}
 						}
 					}
 				}
@@ -97,6 +137,15 @@
 				}else
 				{
 					$itemQuery = mysql_query("INSERT INTO WA_Items (name, damage, player, quantity) VALUES ('$itemName', '$itemDamage', '$user', '$buyQuantity')");
+					$queryLatestAuction = mysql_query("SELECT id FROM WA_Items ORDER BY id DESC");
+					list($latestId)= mysql_fetch_row($queryLatestAuction);
+					
+						$queryEnchants=mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemId='$itemId' AND itemTableId ='1'"); 
+						while(list($idk,$enchIdk, $tableIdk, $itemIdk)= mysql_fetch_row($queryEnchants))
+						{ 
+							$updateEnch = mysql_query("INSERT INTO WA_EnchantLinks (enchId, itemTableId, itemId) VALUES ('$enchIdk', '0', '$latestId')");
+						}
+					
 				}
 			}
             if ($numberLeft != 0)
@@ -106,10 +155,66 @@
                 $itemDelete = mysql_query("DELETE FROM WA_Auctions WHERE id='$itemId'");
             }
 			$logPrice = mysql_query("INSERT INTO WA_SellPrice (name, damage, time, buyer, seller, quantity, price) VALUES ('$itemName', '$itemDamage', '$timeNow', '$user', '$itemOwner', '$buyQuantity', '$itemPrice')");
+			$queryLatestAuction = mysql_query("SELECT id FROM WA_SellPrice ORDER BY id DESC");
+			list($latestId)= mysql_fetch_row($queryLatestAuction);
+			
+				$queryEnchants=mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemId='$itemId' AND itemTableId ='1'"); 
+				while(list($idk,$enchIdk, $tableIdk, $itemIdk)= mysql_fetch_row($queryEnchants))
+				{ 
+					$updateEnch = mysql_query("INSERT INTO WA_EnchantLinks (enchId, itemTableId, itemId) VALUES ('$enchIdk', '3', '$latestId')");
+				}
 			$base = isTrueDamage($itemName, $itemDamage);
-
 			if ($base > 0){
-				$queryMarket=mysql_query("SELECT * FROM WA_MarketPrices WHERE name='$itemName' AND damage='0' ORDER BY id DESC");
+				$queryEnchantLinksMarket = mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemTableId = '4'");
+				$foundIt = false;
+				if (mysql_num_rows($queryEnchantLinks) == 0){
+					$queryMarket1=mysql_query("SELECT * FROM WA_MarketPrices WHERE name='$itemName' AND damage='0' ORDER BY id DESC");
+					$maxId = -1;
+					while(list($idm, $namem, $damagem, $timem, $pricem, $refm)= mysql_fetch_row($queryMarket1))
+					{	
+						$queryMarket2 = mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemId = '$idm' AND itemTableId = '4'");
+						if (mysql_num_rows($queryMarket2)== 0){
+							if ($idm > $maxId){
+								$maxId = $idm;
+								$foundIt = true;
+							}	
+						}
+					}
+					if ($foundIt){
+						$queryMarket=mysql_query("SELECT * FROM WA_MarketPrices WHERE id = '$maxId' ORDER BY id DESC");
+						$foundIt = true;
+					}
+				}
+				else {
+					$queryMarket1=mysql_query("SELECT * FROM WA_MarketPrices WHERE name='$itemName' AND damage='0' ORDER BY id DESC");
+					$maxId = -1;
+					$foundIt = false;
+					while(list($idm, $namem, $damagem, $timem, $pricem, $refm)= mysql_fetch_row($queryMarket1))
+					{
+						$marketEnchantsArray = array ();
+						$queryMarket2 = mysql_query("SELECT enchId FROM WA_EnchantLinks WHERE itemId = '$idm' AND itemTableId = '4'");
+						while(list($enchIdt)= mysql_fetch_row($queryMarket2))
+						{
+							if ($idm > $maxId){
+								$marketEnchantsArray[] = $enchIdt;
+							
+							}
+						}
+						if((array_diff($itemEnchantsArray, $marketEnchantsArray) == null)&&(array_diff($marketEnchantsArray, $itemEnchantsArray) == null)){
+							$maxId = $idm;
+							$foundIt = true;
+						}
+					
+					}
+					if ($foundIt){
+						$queryMarket=mysql_query("SELECT * FROM WA_MarketPrices WHERE id = '$maxId' ORDER BY id DESC");
+						$foundIt = true;
+					}
+				
+				}
+				if ($foundIt == false){
+						$queryMarket=mysql_query("SELECT * FROM WA_MarketPrices WHERE id = '-1' ORDER BY id DESC");
+					}
 
 			}else{
 				$queryMarket=mysql_query("SELECT * FROM WA_MarketPrices WHERE name='$itemName' AND damage='$itemDamage' ORDER BY id DESC");	
@@ -122,17 +227,29 @@
 				$marketCount = $buyQuantity;
 			}else{
 				//found get first item
+				
 				$rowMarket = mysql_fetch_row($queryMarket);
 				$marketId = $rowMarket[0];
 				$marketPrice = $rowMarket[4];
 				$marketCount = $rowMarket[5];
 				$newMarketPrice = (($marketPrice*$marketCount)+$totalPrice)/($marketCount+$buyQuantity);
 				$marketCount = $marketCount+$buyQuantity;
+				
 			}
 			if ($base > 0){
-
+				
 				$newMarketPrice = ($newMarketPrice/($base - $itemDamage))*$base;
+				
 				$insertMarketPrice = mysql_query("INSERT INTO WA_MarketPrices (name, damage, time, marketprice, ref) VALUES ('$itemName', '0', '$timeNow', '$newMarketPrice', '$marketCount')");
+				$queryLatestAuction = mysql_query("SELECT id FROM WA_MarketPrices ORDER BY id DESC");
+				list($latestId)= mysql_fetch_row($queryLatestAuction);
+				
+					$queryEnchants=mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemId='$itemId' AND itemTableId ='1'"); 
+					while(list($idk,$enchIdk, $tableIdk, $itemIdk)= mysql_fetch_row($queryEnchants))
+					{ 
+						$updateEnch = mysql_query("INSERT INTO WA_EnchantLinks (enchId, itemTableId, itemId) VALUES ('$enchIdk', '4', '$latestId')");
+					}
+				
 			}else{
 
 				$insertMarketPrice = mysql_query("INSERT INTO WA_MarketPrices (name, damage, time, marketprice, ref) VALUES ('$itemName', '$itemDamage', '$timeNow', '$newMarketPrice', '$marketCount')");

@@ -179,7 +179,7 @@
 			$itemName = $aRow[ $aColumns[0] ];
 			$fullItemName = getItemName($aRow[ $aColumns[0] ], $aRow[ $aColumns[1] ]);
 			$itemDamage = $aRow[ $aColumns[1] ];
-			$marketPrice = getMarketPrice($itemName, $itemDamage);
+			$marketPrice = getMarketPrice($aRow[ $aColumns[5] ], 1);
 			if ($marketPrice > 0)
 			{
 				$marketPercent = round((($aRow[ $aColumns[4] ]/$marketPrice)*100), 1);
@@ -206,7 +206,20 @@
 				$grade = "gradeX";
 			}
 			$row['DT_RowClass'] = $grade;
-			$row[] = "<a href='graph.php?name=".$aRow[ $aColumns[0] ]."&damage=".$aRow[ $aColumns[1] ]."'><img src=".getItemImage($aRow[ $aColumns[0] ], $aRow[ $aColumns[1] ])." alt=".$fullItemName."/><br/>".$fullItemName."</a>";
+			$theId = $aRow[ $aColumns[5] ];
+			$tempString = "";
+			$queryEnchantLinks=mysql_query("SELECT enchId FROM WA_EnchantLinks WHERE itemId='$theId' AND itemTableId='1'");
+			//print_r(mysql_fetch_row($queryEnchantLinks));
+			while(list($enchId)= mysql_fetch_row($queryEnchantLinks))
+				{ 
+					$queryEnchants=mysql_query("SELECT * FROM WA_Enchantments WHERE id='$enchId'"); 
+					while(list($id, $enchName, $enchantId, $level)= mysql_fetch_row($queryEnchants))
+					{ 
+						$tempString =$tempString."<br/>".getEnchName($enchantId)." - Level: ".$level;
+					}
+				
+				}
+			$row[] = "<a href='graph.php?name=".$aRow[ $aColumns[0] ]."&damage=".$aRow[ $aColumns[1] ]."'><img src=".getItemImage($aRow[ $aColumns[0] ], $aRow[ $aColumns[1] ])." alt=".$fullItemName."/><br/>".$fullItemName.$tempString."</a>";
 			$row[] = "<img width='32px' src='http://minotar.net/avatar/".$aRow[ $aColumns[2] ]."' /><br/>".$aRow[ $aColumns[2] ];
 			$row[] = date('d/m/Y H:i:s', $timeCreated + $auctionDurationSec);
 			$row[] = $aRow[ $aColumns[3] ];

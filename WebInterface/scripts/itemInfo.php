@@ -4,6 +4,9 @@
 		$baseDur = 0;
 		switch ($itemId)
 		{
+			case 261:
+				$baseDur = 385;
+				break;
 			case 256:
 			case 257:
 			case 258:
@@ -105,11 +108,88 @@
 		}
 		return $baseDur;
 	}
-	function getMarketPrice($itemId, $itemDamage)
+	function getMarketPrice($itemTableId, $tableId)
 	{	
+		$table = "";
+		switch ($tableId)
+		{
+			case 0:
+				$table = "WA_Items";
+				break;
+			case 1:
+				$table = "WA_Auctions";
+				break;
+			case 2:
+				$table = "WA_Mail";
+				break;
+			case 3:
+				$table = "WA_SellPrice";
+				break;
+		}
+		$queryItem = mysql_query("SELECT * FROM $table WHERE id='$itemTableId'");
+		$itemRow = mysql_fetch_row($queryItem);
+		$itemId = $itemRow[1];
+		$itemDamage = $itemRow[2];
+		//return $itemId;
+		$queryEnchantLinks = mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemId = '$itemTableId' AND itemTableId = '$tableId'");
+		//return mysql_num_rows($queryEnchantLinks);
+		$itemEnchantsArray = array ();
+		
+		while(list($idt, $enchIdt, $itemTableIdt, $itemIdt)= mysql_fetch_row($queryEnchantLinks))
+		{  
+			$itemEnchantsArray[] = $enchIdt;
+			
+		}
+		$queryEnchantLinksMarket = mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemTableId = '4'");
+		
 		$base = isTrueDamage($itemId, $itemDamage);
 		if ($base > 0){
-			$queryMarket=mysql_query("SELECT * FROM WA_MarketPrices WHERE name='$itemId' AND damage='0' ORDER BY id DESC");
+			
+			if (mysql_num_rows($queryEnchantLinks) == 0){
+				$queryMarket1=mysql_query("SELECT * FROM WA_MarketPrices WHERE name='$itemId' AND damage='0' ORDER BY id DESC");
+				$maxId = -1;
+				$foundIt = false;
+				
+				while(list($idm, $namem, $damagem, $timem, $pricem, $refm)= mysql_fetch_row($queryMarket1))
+				{
+					$queryMarket2 = mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemId = '$idm' AND itemTableId = '4'");
+					if (mysql_num_rows($queryMarket2)== 0){
+						if ($idm > $maxId){
+							$maxId = $idm;
+							$foundIt = true;
+						}
+					}
+				}
+				if ($foundIt){
+					$queryMarket=mysql_query("SELECT * FROM WA_MarketPrices WHERE id = '$maxId' ORDER BY id DESC");
+					$foundIt = true;
+				}
+			}else{
+				$queryMarket1=mysql_query("SELECT * FROM WA_MarketPrices WHERE name='$itemId' AND damage='0' ORDER BY id DESC");
+				$maxId = -1;
+				$foundIt = false;
+				while(list($idm, $namem, $damagem, $timem, $pricem, $refm)= mysql_fetch_row($queryMarket1))
+				{
+					$marketEnchantsArray = array ();
+					$queryMarket2 = mysql_query("SELECT enchId FROM WA_EnchantLinks WHERE itemId = '$idm' AND itemTableId = '4'");
+					while(list($enchIdt)= mysql_fetch_row($queryMarket2))
+					{
+						if ($idm > $maxId){
+							$marketEnchantsArray[] = $enchIdt;
+							
+						}
+					}
+					if((array_diff($itemEnchantsArray, $marketEnchantsArray) == null)&&(array_diff($marketEnchantsArray, $itemEnchantsArray) == null)){
+						$maxId = $idm;
+						$foundIt = true;
+					}
+					
+				}
+				if ($foundIt){
+					$queryMarket=mysql_query("SELECT * FROM WA_MarketPrices WHERE id = '$maxId' ORDER BY id DESC");
+					$foundIt = true;
+				}
+			}
 		}else{
 			$queryMarket=mysql_query("SELECT * FROM WA_MarketPrices WHERE name='$itemId' AND damage='$itemDamage' ORDER BY id DESC");
 		}
@@ -644,7 +724,7 @@
 				return "Apple";
 				break;
 			case 261:
-				return "Bow";
+				return "Bow ".round(($itemDamage/385)*100, 1)."% damaged";
 				break;
 			case 262:
 				return "Arrow";
@@ -2250,70 +2330,70 @@
 						return "images/Grid_Potion_of_Slowness.png";
 						break;
 					case 16378:
-						return "Fire Resistance Splash (2.15)";
+						return "images/Grid_Fire_Resistance_Splash_Potion.png";
 						break;
 					case 16385:
-						return "Regeneration Splash (0.33)";
+						return "images/Grid_Regeneration_Splash_Potion.png";
 						break;
 					case 16386:
-						return "Swiftness Splash (2.15)";
+						return "images/Grid_Swiftness_Splash_Potion.png";
 						break;
 					case 16388:
-						return "Poison Splash (0.33)";
+						return "images/Grid_Poison_Splash_Potion.png";
 						break;
 					case 16389:
-						return "Healing Splash";
+						return "images/Grid_Healing_Splash_Potion.png";
 						break;
 					case 16392:
-						return "Weakness Splash (1.07)";
+						return "images/Grid_Weakness_Splash_Potion.png";
 						break;
 					case 16393:
-						return "Strength Splash (2.15)";
+						return "images/Grid_Strength_Splash_Potion.png";
 						break;
 					case 16394:
-						return "Slowness Splash (2.15)";
+						return "images/Grid_Slowness_Splash_Potion.png";
 						break;
 					case 16396:
-						return "Harming Splash";
+						return "images/Grid_Harming_Splash_Potion.png";
 						break;
 					case 16418:
-						return "Swiftness Splash II (1.07)";
+						return "images/Grid_Swiftness_Splash_Potion.png";
 						break;
 					case 16420:
-						return "Poison Splash II (0.16)";
+						return "images/Grid_Poison_Splash_Potion.png";
 						break;
 					case 16421:
-						return "Healing Splash II";
+						return "images/Grid_Healing_Splash_Potion.png";
 						break;
 					case 16425:
-						return "Strength Splash II (1.07)";
+						return "images/Grid_Strength_Splash_Potion.png";
 						break;
 					case 16428:
-						return "Harming Splash II";
+						return "images/Grid_Harming_Splash_Potion.png";
 						break;
 					case 16449:
-						return "Regeneration Splash (1.30)";
+						return "images/Grid_Regneration_Splash_Potion.png";
 						break;
 					case 16450:
-						return "Swiftness Splash (6.00)";
+						return "images/Grid_Swiftness_Splash_Potion.png";
 						break;
 					case 16451:
-						return "Fire Resistance Splash (6.00)";
+						return "images/Grid_Fire_Resistance_Splash_Potion.png";
 						break;
 					case 16452:
-						return "Poison Splash (1.30)";
+						return "images/Grid_Poison_Splash_Potion.png";
 						break;
 					case 16456:
-						return "Weakness Splash (3.00)";
+						return "images/Grid_Weakness_Splash_Potion.png";
 						break;
 					case 16457:
-						return "Strength Splash (6.00)";
+						return "images/Grid_Strength_Splash_Potion.png";
 						break;
 					case 16458:
-						return "Slowness Splash (3.00)";
+						return "images/Grid_Slowness_Splash_Potion.png";
 						break;
 					case 16471:
-						return "Regeneration Splash II (0.16)";
+						return "images/Grid_Regeneration_Splash_Potion.png";
 						break;
 					default:
 						return "images/Grid_Water_Bottle.png";
@@ -2385,6 +2465,66 @@
 				break;		
 		}
 	}
+	function getEnchName($enchId)
+	{
+		switch($enchId)
+		{
+			case 0:
+				return "Protection";
+				break;
+			case 1:
+				return "Fire Protecion";
+				break;
+			case 2:
+				return "Feather Falling";
+				break;
+			case 3:
+				return "Blast Protection";
+				break;
+			case 4:
+				return "Projectile Protection";
+				break;
+			case 5:
+				return "Respiration";
+				break;
+			case 6:
+				return "Aqua Affinity";
+				break;
+			case 16:
+				return "Sharpness";
+				break;
+			case 17:
+				return "Smite";
+				break;
+			case 18:
+				return "Bane of Arthropods";
+				break;
+			case 19:
+				return "Knockback";
+				break;
+			case 20:
+				return "Fire Aspect";
+				break;
+			case 21:
+				return "Looting";
+				break;
+			case 32:
+				return "Efficiency";
+				break;
+			case 33:
+				return "Silk Touch";
+				break;
+			case 34:
+				return "Unbreaking";
+				break;
+			case 35:
+				return "Fortune";
+				break;
+			default:
+				return "Unknown";
+				break;
+		}
+	}
 	function getItemMaxStack($itemId, $itemDamage)
 	{
 		if ($itemId < 200)
@@ -2432,12 +2572,12 @@
 			case 363:
 			case 364:
 			case 365:
-			case 367:
-			case 368:
+			case 367:			
 				return 64;
 				break;
 			case 332:
 			case 344:
+			case 368:
 				return 16;
 				break;
 			default:

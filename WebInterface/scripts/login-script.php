@@ -6,7 +6,8 @@
 	$Username = mysql_real_escape_string(stripslashes($_POST['Username']));
 	$Username = trim($Username);
 	$Password = md5(mysql_real_escape_string(stripslashes($_POST['Password'])));
-	$result = mysql_query("SELECT * FROM WA_Players WHERE name='$Username' AND pass='$Password'");
+	//$result = mysql_query("SELECT * FROM WA_Players WHERE name='$Username' AND pass='$Password'");
+	$result = mysql_query("SELECT * FROM WA_Players WHERE name='$Username'");
 	$count = mysql_num_rows($result);
 	$playerRow = mysql_fetch_row($result);
 	if ($count==1){

@@ -14,19 +14,19 @@
 	require 'itemInfo.php';
 	require_once '../classes/EconAccount.php';
 	if ($useTwitter == true){require_once 'twitter.class.php';}
-	$itemNameFull = explode(":", $_POST['Item']);
-	$sellName = $itemNameFull[0];
-	$sellDamage = $itemNameFull[1];
+	$itemId = $_POST['Item'];
+	$queryItemInfo = mysql_query("SELECT * FROM WA_Items WHERE id = '$itemId'");
+	list($id, $itemName, $itemDamage, $itemOwner, $itemQuantity)= mysql_fetch_row($queryItemInfo);
+	$sellName = $itemName;
+	$sellDamage = $itemDamage;
 	$player = new EconAccount($user, $useMySQLiConomy, $iConTableName);
-	$marketPrice = getMarketPrice($sellName, $sellDamage);
+	$marketPrice = getMarketPrice($itemId, 0);
 	$sellPrice = round($_POST['Price'], 2);
 	$itemFullName = getItemName($sellName, $sellDamage);
 	if ($sellPrice > $maxSellPrice){ $sellPrice == $maxSellPrice; }
 	$sellQuantity = floor($_POST['Quantity']);
 	$maxStack = getItemMaxStack($sellName, $sellDamage);
-	
-	$queryItems=mysql_query("SELECT * FROM WA_Items WHERE player='$user' AND name='$sellName' AND damage='$sellDamage'");
-	list($id, $itemName, $itemDamage, $itemOwner, $itemQuantity)= mysql_fetch_row($queryItems);
+
     if ($sellQuantity <= 0){
 		$_SESSION['error'] = 'Quantity was not a valid number.';
 		header("Location: ../myauctions.php");
@@ -51,6 +51,8 @@
 							$player->money = $player->money - $itemFee;
 							$player->saveMoney($useMySQLiConomy, $iConTableName);
 							$itemQuery = mysql_query("INSERT INTO WA_Auctions (name, damage, player, quantity, price, created) VALUES ('$sellName', '$sellDamage', '$user', '$sellQuantity', '$sellPrice', '$timeNow')");
+							$queryLatestAuction = mysql_query("SELECT id FROM WA_Auctions ORDER BY id DESC");
+							list($latestId)= mysql_fetch_row($queryLatestAuction);
 						}
 						if ($itemsLeft == 0)
 						{
@@ -64,6 +66,15 @@
 							$twitter = new Twitter($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret);
 							$twitter->send('[WA] Auction Created: '.$user.' is selling '.$sellQuantity.' x '.$itemFullName.' for '.$currencyPrefix.$sellPrice.$currencyPostfix.' each. At '.date("H:i:s").'. '.$shortLinkToAuction.' #webauction');
 						}
+						
+						
+						
+							$queryEnchants=mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemId='$id' AND itemTableId ='0'"); 
+							while(list($idk,$enchIdk, $tableIdk, $itemIdk)= mysql_fetch_row($queryEnchants))
+							{ 
+								$updateEnch = mysql_query("INSERT INTO WA_EnchantLinks (enchId, itemTableId, itemId) VALUES ('$enchIdk', '1', '$latestId')");
+							}
+												
 						$_SESSION['success'] = "You auctioned $sellQuantity $itemFullName for ".$currencyPrefix.$sellPrice.$currencyPostfix." each, the fee was ".$currencyPrefix.$itemFee.$currencyPostfix;
 						header("Location: ../myauctions.php");
 					}else

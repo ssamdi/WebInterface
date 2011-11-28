@@ -69,7 +69,7 @@
 	<?php
 	while(list($id, $name, $damage, $player, $quantity)= mysql_fetch_row($queryItems))
     { 
-		$marketPrice = getMarketPrice($name, $damage);
+		$marketPrice = getMarketPrice($id, 0);
 		$marketTotal = $marketPrice*$quantity;
 		if ($marketPrice == 0)
 		{
@@ -78,7 +78,22 @@
 		}
 	?>
         <tr class="gradeC">
-			<td><a href="graph.php?name=<?php echo $name."&damage=".$damage ?>"><img src="<?php echo getItemImage($name, $damage) ?>" alt="<?php echo getItemName($name, $damage) ?>"/><br/><?php echo getItemName($name, $damage) ?></a></td>
+			<td><a href="graph.php?name=<?php echo $name."&damage=".$damage ?>"><img src="<?php echo getItemImage($name, $damage) ?>" alt="<?php echo getItemName($name, $damage) ?>"/><br/>
+			<?php echo getItemName($name, $damage) ?>
+			<?php 
+				$queryEnchantLinks=mysql_query("SELECT enchId FROM WA_EnchantLinks WHERE itemId='$id' AND itemTableId=0"); 
+				while(list($enchId)= mysql_fetch_row($queryEnchantLinks))
+				{ 
+					$queryEnchants=mysql_query("SELECT * FROM WA_Enchantments WHERE id='$enchId'"); 
+					while(list($idj, $enchName, $enchantId, $level)= mysql_fetch_row($queryEnchants))
+					{ 
+						echo "<br/>".getEnchName($enchantId)." - Level: ".$level;
+					}
+				
+				}
+				
+			?>
+			</a></td>
 			<td><?php echo $quantity ?></td>
             <td><?php echo $marketPrice ?></td>
 			<td><?php echo $marketTotal ?></td>

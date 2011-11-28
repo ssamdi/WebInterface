@@ -14,7 +14,7 @@
 		$iConRow = mysql_fetch_row($queryiConomy);
 	}
 	$queryItems=mysql_query("SELECT * FROM WA_Items WHERE player='$user'");
-	$queryAuctions=mysql_query("SELECT * FROM WA_Auctions WHERE player='$user'"); 
+	$queryAuctions=mysql_query("SELECT id, name, damage, player, quantity, price, created FROM WA_Auctions WHERE player='$user'"); 
 
 	$playerQuery = mysql_query("SELECT * FROM WA_Players WHERE name='$user'");
 	$playerRow = mysql_fetch_row($playerQuery);
@@ -70,10 +70,22 @@
 <?php 
 while(list($id, $name, $damage, $player, $quantity)= mysql_fetch_row($queryItems))
     { 
-	$marketPrice = getMarketPrice($name, $damage);
+	$marketPrice = getMarketPrice($id, 0);
 	if ($marketPrice == 0){$marketPrice = "N/A";}
 	?>
-  		<option value="<?php echo $name ?>:<?php echo $damage ?>"><?php echo getItemName($name, $damage) ?> (<?php echo $quantity ?>) (Average $<?php echo $marketPrice ?>)</option>
+  		<option value="<?php echo $id ?>"><?php echo getItemName($name, $damage); 
+		$queryEnchantLinks=mysql_query("SELECT enchId FROM WA_EnchantLinks WHERE itemId='$id' AND itemTableId=0"); 
+				while(list($enchId)= mysql_fetch_row($queryEnchantLinks))
+				{ 
+					$queryEnchants=mysql_query("SELECT * FROM WA_Enchantments WHERE id='$enchId'"); 
+					while(list($id, $enchName, $enchantId, $level)= mysql_fetch_row($queryEnchants))
+					{ 
+						echo " (".getEnchName($enchantId)." - Level: ".$level.")";
+					}
+				
+				}
+		
+		?> (<?php echo $quantity ?>) (Average $<?php echo $marketPrice ?>)</option>
 
 <?php }?>
 </select><br />
@@ -89,6 +101,7 @@ while(list($id, $name, $damage, $player, $quantity)= mysql_fetch_row($queryItems
 	<thead>
 		<tr>
 			<th>Item</th>
+			<th>Expires</th>
 			<th>Quantity</th>
             <th>Price (Each)</th>
 			<th>Price (Total)</th>			
@@ -98,9 +111,10 @@ while(list($id, $name, $damage, $player, $quantity)= mysql_fetch_row($queryItems
 	</thead>
 	<tbody>
 	<?php
-	while(list($id, $name, $damage, $player, $quantity, $price)= mysql_fetch_row($queryAuctions))
+	while(list($id, $name, $damage, $player, $quantity, $price, $timeCreated)= mysql_fetch_row($queryAuctions))
     { 
-		$marketPrice = getMarketPrice($name, $damage);
+		echo $timeCreated + $auctionDurationSec;
+		$marketPrice = getMarketPrice($id, 1);
 		if ($marketPrice > 0)
 		{
 			$marketPercent = round((($price/$marketPrice)*100), 1);
@@ -128,7 +142,21 @@ while(list($id, $name, $damage, $player, $quantity)= mysql_fetch_row($queryItems
 	
 	?>
         <tr class="<?php echo $grade ?>">
-			<td><a href="graph.php?name=<?php echo $name."&damage=".$damage ?>"><img src="<?php echo getItemImage($name, $damage) ?>" alt="<?php echo getItemName($name, $damage) ?>"/><br/><?php echo getItemName($name, $damage) ?></a></td>
+			<td><a href="graph.php?name=<?php echo $name."&damage=".$damage ?>"><img src="<?php echo getItemImage($name, $damage) ?>" alt="<?php echo getItemName($name, $damage) ?>"/><br/><?php echo getItemName($name, $damage);
+			$queryEnchantLinks=mysql_query("SELECT enchId FROM WA_EnchantLinks WHERE itemId='$id' AND itemTableId=1"); 
+				while(list($enchId)= mysql_fetch_row($queryEnchantLinks))
+				{ 
+					$queryEnchants=mysql_query("SELECT * FROM WA_Enchantments WHERE id='$enchId'"); 
+					while(list($idj, $enchName, $enchantId, $level)= mysql_fetch_row($queryEnchants))
+					{ 
+						echo "<br/>".getEnchName($enchantId)." - Level: ".$level;
+					}
+				
+				}
+			
+			
+			?></a></td>
+			<td><?php echo date('d/m/Y H:i:s', $timeCreated + $auctionDurationSec); ?></td>
 			<td><?php echo $quantity ?></td>
 			<td class="center"><?php echo $price ?></td>
 			<td class="center"><?php echo $price*$quantity ?></td>

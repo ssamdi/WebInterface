@@ -72,7 +72,7 @@
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
 	<thead>
 		<tr>
-			<th>Item</th>
+			<th>Item Info</th>
 			<th>Seller</th>
 			<th>Expires</th>
             <th>Quantity</th>
