@@ -43,7 +43,7 @@
 				if ($itemQuantity >= $sellQuantity)
 				{
 					$itemsLeft = $itemQuantity - $sellQuantity;
-					$itemFee = (($marketPrice/100)*$auctionFee);
+					$itemFee = (($marketPrice/100)*$auctionFee)*$sellQuantity;
 					if ($player->money >= $itemFee){
 						if ($sellQuantity > 0)
 						{
