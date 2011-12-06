@@ -1115,7 +1115,7 @@
 				return "Gold Nugget";
 				break;
 			case 372:
-				return "Nether Wart Seeds";
+				return "Nether Wart";
 				break;
 			case 373:
 				switch ($itemDamage)
@@ -1182,6 +1182,9 @@
 						break;
 					case 8258:
 						return "Swiftness Potion (8.00)";
+						break;
+					case 8259:
+						return "Fire Resistance Potion (8.00)";
 						break;
 					case 8260:
 						return "Poison Potion (2.00)";
@@ -2249,7 +2252,7 @@
 				return "images/Grid_Gold_Nugget.png";
 				break;
 			case 372:
-				return "images/Grid_Grid_Nether_Ward_Seeds.png";
+				return "images/Grid_Nether_Wart_Seeds.png";
 				break;
 			case 373:
 				switch ($itemDamage)
@@ -2316,6 +2319,9 @@
 						break;
 					case 8258:
 						return "images/Grid_Potion_of_Swiftness.png";
+						break;
+					case 8259:
+						return "images/Grid_Potion_of_Fire_Resistance.png";
 						break;
 					case 8260:
 						return "images/Grid_Potion_of_Poison.png";
