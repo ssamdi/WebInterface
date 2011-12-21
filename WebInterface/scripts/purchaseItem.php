@@ -255,9 +255,12 @@
 				$insertMarketPrice = mysql_query("INSERT INTO WA_MarketPrices (name, damage, time, marketprice, ref) VALUES ('$itemName', '$itemDamage', '$timeNow', '$newMarketPrice', '$marketCount')");
 			}
 			if ($useTwitter == true){
+				try{
 				$twitter = new Twitter($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret);
 				$twitter->send('[WA] Item Bought: '.$user.' bought '.$buyQuantity.' x '.$itemFullName.' for '.$currencyPrefix.$itemPrice.$currencyPostfix.' each from '.$itemOwner.'. At '.date("H:i:s").'. '.$shortLinkToAuction.' #webauction');
-			}
+				}catch (Exception e){
+			   		//may have reached twitter daily limit
+				}
             $_SESSION['success'] = "You purchased $buyQuantity $itemFullName from $itemOwner for ".$currencyPrefix.$totalPrice.$currencyPostfix.".";
 			header("Location: ../index.php");
 
