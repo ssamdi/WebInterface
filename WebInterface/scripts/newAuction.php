@@ -63,8 +63,13 @@
 							$itemUpdate = mysql_query("UPDATE WA_Items SET quantity='$itemsLeft' WHERE id='$id'");
 						}
 						if ($useTwitter == true){
+							try{
 							$twitter = new Twitter($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret);
 							$twitter->send('[WA] Auction Created: '.$user.' is selling '.$sellQuantity.' x '.$itemFullName.' for '.$currencyPrefix.$sellPrice.$currencyPostfix.' each. At '.date("H:i:s").'. '.$shortLinkToAuction.' #webauction');
+							}catch (Exception e){
+								//normally means you reached the daily twitter limit.
+							}
+						
 						}
 						
 						
