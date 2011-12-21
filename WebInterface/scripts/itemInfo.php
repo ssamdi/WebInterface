@@ -2531,80 +2531,172 @@
 				break;
 		}
 	}
-	function getItemMaxStack($itemId, $itemDamage)
-	{
-		if ($itemId < 200)
-		{
+	function getItemMaxStack($itemId, $itemDamage) {
+	switch($itemId) {
+		case 63:
+			return 1;
+		case 68:
+			return 1;
+		case 92:
+			return 1;
+		case 256:
+			return 1;
+		case 257:
+			return 1;
+		case 258:
+			return 1;
+		case 259:
+			return 1;
+		case 261:
+			return 1;
+		case 267:
+			return 1;
+		case 268:
+			return 1;
+		case 269:
+			return 1;
+		case 270:
+			return 1;
+		case 271:
+			return 1;
+		case 272:
+			return 1;
+		case 273:
+			return 1;
+		case 274:
+			return 1;
+		case 275:
+			return 1;
+		case 276:
+			return 1;
+		case 277:
+			return 1;
+		case 278:
+			return 1;
+		case 279:
+			return 1;
+		case 282:
+			return 1;
+		case 283:
+			return 1;
+		case 284:
+			return 1;
+		case 285:
+			return 1;
+		case 286:
+			return 1;
+		case 290:
+			return 1;
+		case 291:
+			return 1;
+		case 292:
+			return 1;
+		case 293:
+			return 1;
+		case 294:
+			return 1;
+		case 298:
+			return 1;
+		case 299:
+			return 1;
+		case 300:
+			return 1;
+		case 301:
+			return 1;
+		case 302:
+			return 1;
+		case 303:
+			return 1;
+		case 304:
+			return 1;
+		case 305:
+			return 1;
+		case 306:
+			return 1;
+		case 307:
+			return 1;
+		case 308:
+			return 1;
+		case 309:
+			return 1;
+		case 310:
+			return 1;
+		case 311:
+			return 1;
+		case 312:
+			return 1;
+		case 313:
+			return 1;
+		case 314:
+			return 1;
+		case 315:
+			return 1;
+		case 316:
+			return 1;
+		case 317:
+			return 1;
+		case 323:
+			return 1;
+		case 324:
+			return 1;
+		case 325:
+			return 1;
+		case 326:
+			return 1;
+		case 327:
+			return 1;
+		case 328:
+			return 1;
+		case 329:
+			return 1;
+		case 330:
+			return 1;
+		case 332:
+			return 16;
+		case 333:
+			return 1;
+		case 335:
+			return 1;
+		case 342:
+			return 1;
+		case 343:
+			return 1;
+		case 344:
+			return 16;
+		case 346:
+			return 1;
+		case 354:
+			return 1;
+		case 355:
+			return 1;
+		case 358:
+			return 1;
+		case 359:
+			return 1;
+		case 2256:
+			return 1;
+		case 2257:
+			return 1;
+		case 2258:
+			return 1;
+		case 2259:
+			return 1;
+		case 2260:
+			return 1;
+		case 2261:
+			return 1;
+		case 2262:
+			return 1;
+		case 2263:
+			return 1;
+		case 2264:
+			return 1;
+		case 2265:
+			return 1;
+		case 2266:
+			return 1;
+		default:
 			return 64;
-		}
-			
-			
-		switch($itemId)
-		{		
-			case 262:
-			case 263:
-			case 264:
-			case 265:
-			case 266:
-			case 280:
-			case 287:
-			case 288:
-			case 289:
-			case 295:
-			case 296:
-			case 297:
-			case 318:
-			case 319:
-			case 320:
-			case 321:
-			case 331:
-			case 334:
-			case 336:
-			case 337:
-			case 338:
-			case 339:
-			case 341:	
-			case 348:
-			case 349:
-			case 350:
-			case 351:
-			case 352:
-			case 353:
-			case 356:
-			case 357:
-			case 360:
-			case 361:
-			case 362:
-			case 363:
-			case 364:
-			case 365:
-			case 367:
-			case 369:
-			case 370:
-			case 371:
-			case 372:
-			case 373:
-			case 374:
-			case 375:
-			case 376:
-			case 377:
-			case 378:
-			case 379:
-			case 381:
-			case 382:
-				return 64;
-				break;
-			case 332:
-			case 344:
-			case 368:
-				return 16;
-				break;
-			case 26:
-			case 52:
-			
-			default:
-				return 1;
-				break;		
-		}
 	}
+}
 ?>
