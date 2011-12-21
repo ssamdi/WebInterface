@@ -52,7 +52,7 @@
 					$itemQuery = mysql_query("UPDATE WA_Items SET quantity='$newQuantity' WHERE id='$stackId'");
 				}else
 				{
-					$itemQuery = mysql_query("INSERT INTO WA_Items (name, damage, player, quantity) VALUES ('$itemName', '$itemDamage', '$user', '$itemQuantity')");
+					$itemQuery = mysql_query("INSERT INTO WA_Items (name, damage, player, quantity) VALUES ('$itemName', '$itemDamage', '$itemOwner', '$itemQuantity')");
 					$queryLatestAuction = mysql_query("SELECT id FROM WA_Items ORDER BY id DESC");
 					list($latestId)= mysql_fetch_row($queryLatestAuction);
 					
