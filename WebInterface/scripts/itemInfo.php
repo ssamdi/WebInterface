@@ -2578,7 +2578,20 @@
 			case 363:
 			case 364:
 			case 365:
-			case 367:			
+			case 367:
+			case 369:
+			case 370:
+			case 371:
+			case 372:
+			case 373:
+			case 374:
+			case 375:
+			case 376:
+			case 377:
+			case 378:
+			case 379:
+			case 381:
+			case 382:
 				return 64;
 				break;
 			case 332:
@@ -2586,6 +2599,9 @@
 			case 368:
 				return 16;
 				break;
+			case 26:
+			case 52:
+			
 			default:
 				return 1;
 				break;		
