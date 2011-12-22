@@ -130,6 +130,7 @@
 		$itemRow = mysql_fetch_row($queryItem);
 		$itemId = $itemRow[1];
 		$itemDamage = $itemRow[2];
+		$queryMarket = "";
 		//return $itemId;
 		$queryEnchantLinks = mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemId = '$itemTableId' AND itemTableId = '$tableId'");
 		//return mysql_num_rows($queryEnchantLinks);
@@ -193,7 +194,7 @@
 		}else{
 			$queryMarket=mysql_query("SELECT * FROM WA_MarketPrices WHERE name='$itemId' AND damage='$itemDamage' ORDER BY id DESC");
 		}
-		if (!$queryMarket){
+		if ($queryMarket == ""){
 			//market price not found
 			return 0;
 		}else{
