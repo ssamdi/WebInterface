@@ -257,7 +257,7 @@
 				return "Lava";
 				break;
 			case 11:
-				return "Stationary Water";
+				return "Stationary Lava";
 				break;
 			case 12:
 				return "Sand";
@@ -581,7 +581,7 @@
 				return "Clay";
 				break;
 			case 83:
-				return "Sugar Cane";
+				return "Sugar Cane (Block)";
 				break;
 			case 84:
 				return "Jukebox";
@@ -966,7 +966,7 @@
 				return "Clay Balls";
 				break;
 			case 338:
-				return "Sugarcane";
+				return "Sugar Cane";
 				break;
 			case 339:
 				return "Paper";
