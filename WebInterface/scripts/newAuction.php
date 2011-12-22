@@ -66,7 +66,7 @@
 							try{
 							$twitter = new Twitter($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret);
 							$twitter->send('[WA] Auction Created: '.$user.' is selling '.$sellQuantity.' x '.$itemFullName.' for '.$currencyPrefix.$sellPrice.$currencyPostfix.' each. At '.date("H:i:s").'. '.$shortLinkToAuction.' #webauction');
-							}catch (Exception e){
+							}catch (Exception $e){
 								//normally means you reached the daily twitter limit.
 							}
 						
