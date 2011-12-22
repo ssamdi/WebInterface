@@ -261,6 +261,7 @@
 				}catch (Exception e){
 			   		//may have reached twitter daily limit
 				}
+			}
             $_SESSION['success'] = "You purchased $buyQuantity $itemFullName from $itemOwner for ".$currencyPrefix.$totalPrice.$currencyPostfix.".";
 			header("Location: ../index.php");
 
