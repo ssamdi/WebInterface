@@ -51,11 +51,8 @@
 	if ($player->money >= $totalPrice){
 		if ($user != $auction->owner){
 			$timeNow = time();
-			$player->money = $player->money - $totalPrice;
-			$owner->money = $owner->money + $totalPrice;
-
-            $player->saveMoney($useMySQLiConomy, $iConTableName);
-            $owner->saveMoney($useMySQLiConomy, $iConTableName);
+			$player->spend($totalPrice, $useMySQLiConomy, $iConTableName);
+			$owner->earn($totalPrice, $useMySQLiConomy, $iConTableName);
             $alertQuery = mysql_query("INSERT INTO WA_SaleAlerts (seller, quantity, price, buyer, item) VALUES ('$auction->owner', '$buyQuantity', '$auction->price', '$user', '$auction->fullname')");
 
 			if ($sendPurchaceToMail){
@@ -251,7 +248,8 @@
 			   		//may have reached twitter daily limit
 				}
 			}
-			
+			$player->buyItem($buyQuantity);
+			$owner->sellItem($buyQuantity);
             $_SESSION['success'] = "You purchased $buyQuantity $auction->fullname from $auction->owner for ".$currencyPrefix.$totalPrice.$currencyPostfix.".";
 			if ($toDelete){
 				$auction->delete();

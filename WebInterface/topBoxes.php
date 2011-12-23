@@ -46,6 +46,7 @@ Mail: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="index.php">Home</a><br />
     <a href="myitems.php">My Items</a><br />
     <a href="myauctions.php">My Auctions</a><br />
+	<a href="playerstats.php">Player Stats</a><br />
     <a href="info.php">Item Info</a><br />
     <a href="transactionLog.php">Transaction Log</a><br />
     <a href="logout.php">Logout</a>

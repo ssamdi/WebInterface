@@ -40,13 +40,12 @@
 				if ($item->quantity >= $sellQuantity)
 				{
 					$item->changeQuantity(0 - $sellQuantity);
-					$itemFee = (($item->marketPrice/100)*$auctionFee)*$sellQuantity;
+					$itemFee = (($item->marketprice/100)*$auctionFee)*$sellQuantity;
 					if ($player->money >= $itemFee){
 						if ($sellQuantity > 0)
 						{
 							$timeNow = time();
-							$player->money = $player->money - $itemFee;
-							$player->saveMoney($useMySQLiConomy, $iConTableName);
+							$player->spend($itemFee, $useMySQLiConomy, $iConTableName);
 							$itemQuery = mysql_query("INSERT INTO WA_Auctions (name, damage, player, quantity, price, created) VALUES ('$item->name', '$item->amage', '$item->owner', '$sellQuantity', '$sellPrice', '$timeNow')");
 							$queryLatestAuction = mysql_query("SELECT id FROM WA_Auctions ORDER BY id DESC");
 							list($latestId)= mysql_fetch_row($queryLatestAuction);
