@@ -19,9 +19,9 @@ Money: &nbsp;
 <?php
 	} else {
 ?>
-Money: &nbsp;$
+Money: &nbsp;
 <?php
-	echo $playerRow['3'];
+	echo $currencyPrefix.$playerRow['3'].$currencyPostfix;;
 ?>
 <br />
 <?php
@@ -31,6 +31,10 @@ Mail: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <?php
 	echo $mailCount;
 ?>
+<br />
+<?php
+	echo date('jS M Y H:i:s');
+?> 
 <br />
         </p>
       </td>

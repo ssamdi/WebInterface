@@ -83,7 +83,7 @@
 	while(list($id, $name, $damage, $time, $quantity, $price, $seller, $buyer)= mysql_fetch_row($queryMyPurchases))
     { 
 		$marketPrice = getMarketPrice($name, $damage, $marketTimeMin);
-		$timeFormat = date('d/m/Y H:i:s', $time);	
+		$timeFormat = date('jS M Y H:i:s', $time);	
 		
 		if ($marketPrice > 0)
 		{
@@ -146,7 +146,7 @@
 	while(list($id, $name, $damage, $time, $quantity, $price, $seller, $buyer)= mysql_fetch_row($queryMySales))
     { 
 		$marketPrice = getMarketPrice($name, $damage, $marketTimeMin);
-		$timeFormat = date('d/m/Y H:i:s', $time);
+		$timeFormat = date('jS M Y H:i:s', $time);
 		
 		$marketPrice = getMarketPrice($name, $damage, $marketTimeMin);
 		if ($marketPrice > 0)

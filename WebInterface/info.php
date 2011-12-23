@@ -7,6 +7,7 @@
 	$user = $_SESSION['User'];
 	require 'scripts/config.php';
 	require 'scripts/itemInfo.php';
+	require_once 'classes/Market.php';
 	$isAdmin = $_SESSION['Admin'];
 	$queryAuctions = mysql_query("SELECT * FROM WA_Auctions");
 	if ($useMySQLiConomy) {
@@ -60,35 +61,51 @@
           </thead>
           <tbody>
 <?php
-	$marketNames = array();
+	$marketItems = array();
+	$add = true;
 	while(list($id, $name, $damage, $time, $price, $ref) = mysql_fetch_row($queryMarket)) {
-		$keyName = in_array($name.":".$damage, $marketNames);
-		if (!$keyName == false) {
-			//found this item id
-		} else {
-			$marketNames[] = $name . ":" . $damage;
-			$fullName = getItemName($name, $damage);
-// TODO: printf();
-?>
+		$market = new Market($id);
+		foreach ($marketItems as $mar) {
+			if ($market->name == $mar->name){
+				if ($market->damage == $mar->damage){
+					if(count(array_diff($market->enchants, $mar->enchants)) ==0 ){
+						$add = false;						
+					}
+				}
+			}
+		}
+		if ($add == true){
+			$marketItems[] = $market;
+		//echo "<pre>";
+		//print_r($marketItems);
+		//echo "</pre>";
+ 
+		?>
+	
           <tr class="gradeC">
-            <td><a href="graph.php?name=<?php echo $name."&damage=".$damage ?>"><img src="<?php echo getItemImage($name, $damage) ?>" alt="<?php echo getItemName($name, $damage) ?>"/><br/><?php echo getItemName($name, $damage) ?></a></td>
+            <td><a href="graph.php?name=<?php echo $market->name."&damage=".$market->damage ?>"><img src="<?php echo $market->image ?>" alt="<?php echo $market->fullname ?>"/><br/>
+			<?php 
+			echo $market->fullname;
+			foreach ($market->enchants as $ench) {
+				echo "<br/>".getEnchName($ench["name"])." - Level: ".$ench["level"];
+			}
+			?>
+			</a></td>
             <td>
 <?php
-	echo $ref;
+			echo $market->ref;
 ?>
             </td>
             <td>
 <?php
-	echo round($price, 2);
+			echo round($market->price, 2);
 ?>
             </td>
-            <td><a href="graph.php?name=<?php echo $name ?>&damage=<?php echo $damage ?>">View Graph</a></td>
+			<td><form action='graph.php' method='post'><input type='hidden' name='Name' value='<?php echo $market->name ?>' /><input type='hidden' name='Damage' value='<?php echo $market->damage ?>' /><input type='submit' value='View Graph' class='button' /></form>	
+			
           </tr>
 <?php
-	}
-?>
-<?php
-	}
+	}}
 ?>
         </tbody>
       </table>

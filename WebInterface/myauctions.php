@@ -116,7 +116,6 @@ echo " (".getEnchName($enchantId)." - Level: ".$level.")";
 <?php
 while(list($id, $name, $damage, $player, $quantity, $price, $timeCreated)= mysql_fetch_row($queryAuctions))
 {
-echo $timeCreated + $auctionDurationSec;
 $marketPrice = getMarketPrice($id, 1);
 if ($marketPrice > 0)
 {
@@ -149,19 +148,19 @@ $grade = "gradeX";
 $queryEnchantLinks=mysql_query("SELECT enchId FROM WA_EnchantLinks WHERE itemId='$id' AND itemTableId=1");
 while(list($enchId)= mysql_fetch_row($queryEnchantLinks))
 {
-$queryEnchants=mysql_query("SELECT * FROM WA_Enchantments WHERE id='$enchId'");
-while(list($idj, $enchName, $enchantId, $level)= mysql_fetch_row($queryEnchants))
-{
-echo "<br/>".getEnchName($enchantId)." - Level: ".$level;
-}
+	$queryEnchants=mysql_query("SELECT * FROM WA_Enchantments WHERE id='$enchId'");
+	while(list($idj, $enchName, $enchantId, $level)= mysql_fetch_row($queryEnchants))
+	{
+		echo "<br/>".getEnchName($enchantId)." - Level: ".$level;
+	}
 }
 ?></a></td>
-<td><?php echo date('d/m/Y H:i:s', $timeCreated + $auctionDurationSec); ?></td>
+<td><?php echo date('jS M Y H:i:s', $timeCreated + $auctionDurationSec); ?></td>
 <td><?php echo $quantity ?></td>
 <td class="center"><?php echo $price ?></td>
 <td class="center"><?php echo $price*$quantity ?></td>
 <td class="center"><?php echo $marketPercent ?></td>
-<td class="center"><a href="scripts/cancelAuction.php?id=<?php echo $id ?>">Cancel</a></td>
+<td class="center"><a a class='button' href="scripts/cancelAuction.php?id=<?php echo $id ?>">Cancel</a></td>
 </tr>
 <?php } ?>
 </tbody>
