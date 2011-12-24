@@ -17,7 +17,6 @@
 	if ($useTwitter == true){require_once 'twitter.class.php';}
 	$itemId = mysql_real_escape_string(stripslashes($_POST['Item']));
 	$item = new Item($itemId);
-
 	$player = new EconAccount($user, $useMySQLiConomy, $iConTableName);
 	$sellPrice = round($_POST['Price'], 2);
 	
@@ -46,7 +45,7 @@
 						{
 							$timeNow = time();
 							$player->spend($itemFee, $useMySQLiConomy, $iConTableName);
-							$itemQuery = mysql_query("INSERT INTO WA_Auctions (name, damage, player, quantity, price, created) VALUES ('$item->name', '$item->amage', '$item->owner', '$sellQuantity', '$sellPrice', '$timeNow')");
+							$itemQuery = mysql_query("INSERT INTO WA_Auctions (name, damage, player, quantity, price, created) VALUES ('$item->name', '$item->damage', '$item->owner', '$sellQuantity', '$sellPrice', '$timeNow')");
 							$queryLatestAuction = mysql_query("SELECT id FROM WA_Auctions ORDER BY id DESC");
 							list($latestId)= mysql_fetch_row($queryLatestAuction);
 						}
