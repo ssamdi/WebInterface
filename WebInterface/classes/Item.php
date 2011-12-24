@@ -9,6 +9,7 @@ class Item
 	public $marketprice;
 	public $fullname;
 	public $maxstack;
+	public $enchants;
 	
 	function __construct($idIn)
     {
@@ -22,6 +23,22 @@ class Item
 		$this->marketprice = getMarketPrice($this->id, 0);
 		$this->fullname = getItemName($this->name, $this->damage);
 		$this->maxstack = getItemMaxStack($this->name);
+		
+		$queryEnchantLinks = mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemId = '$this->id' AND itemTableId = '0'");
+		$itemEnchantsArray = array ();
+		
+		while(list($idt, $enchIdt, $itemTableIdt, $itemIdt)= mysql_fetch_row($queryEnchantLinks))
+		{  
+			$eArray = array();
+			$q = mysql_query("SELECT * FROM WA_Enchantments WHERE id = '$enchIdt'");
+			list($ide, $fullnamee, $namee, $levele)= mysql_fetch_row($q);
+			$eArray["id"] = $ide;
+			$eArray["name"] = $namee;
+			$eArray["level"] = $levele;
+			$itemEnchantsArray[] = $eArray;
+			
+		}
+		$this->enchants = $itemEnchantsArray;
     }
 	public function changeQuantity($amount)
     {

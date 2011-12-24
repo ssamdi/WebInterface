@@ -51,9 +51,18 @@
 						null
 					]
 				});
-				jTable = $('#example2').dataTable({
+				oTable = $('#example2').dataTable({
 					"bJQueryUI": true,
-					"sPaginationType": "full_numbers"
+					"sPaginationType": "full_numbers",
+					"aoColumns": [
+						{ "sType": "date-euro" },
+						null,
+						null,
+						null,
+						null,
+						null,
+						null
+					]
 				});
 			} );
 		</script>
@@ -82,7 +91,7 @@
 	<?php
 	while(list($id, $name, $damage, $time, $quantity, $price, $seller, $buyer)= mysql_fetch_row($queryMyPurchases))
     { 
-		$marketPrice = getMarketPrice($name, $damage, $marketTimeMin);
+		$marketPrice = getMarketPrice($id, 3);
 		$timeFormat = date('jS M Y H:i:s', $time);	
 		
 		if ($marketPrice > 0)
@@ -113,21 +122,29 @@
     	
         <tr class="<?php echo $grade ?>">
 			<td><?php echo $timeFormat ?></td>
-			<td><a href="graph.php?name=<?php echo $name."&damage=".$damage ?>"><img src="<?php echo getItemImage($name, $damage) ?>" alt="<?php echo getItemName($name, $damage) ?>"/><br/><?php echo getItemName($name, $damage) ?></a></td>
+			<td><a href="graph.php?name=<?php echo $name."&damage=".$damage ?>"><img src="<?php echo getItemImage($name, $damage) ?>" alt="<?php echo getItemName($name, $damage) ?>"/><br/><?php echo getItemName($name, $damage); 
+			$queryEnchantLinks=mysql_query("SELECT enchId FROM WA_EnchantLinks WHERE itemId='$id' AND itemTableId=3");
+			while(list($enchId)= mysql_fetch_row($queryEnchantLinks))
+			{
+				$queryEnchants=mysql_query("SELECT * FROM WA_Enchantments WHERE id='$enchId'");
+				while(list($idj, $enchName, $enchantId, $level)= mysql_fetch_row($queryEnchants))
+				{
+					echo "<br/>".getEnchName($enchantId)." - Level: ".$level;
+				}
+			}
+			?></a></td>
 			<td><img width="32px" src="http://minotar.net/avatar/<?php echo $seller ?>" /><br/><?php echo $seller ?></td>
-          <td><?php echo $quantity ?></td>
-          <td class="center"><?php echo $price ?></td>
+			<td><?php echo $quantity ?></td>
+			<td class="center"><?php echo $price ?></td>
 			<td class="center"><?php echo $price*$quantity ?></td>
-			
 			<td class="center"><?php echo $marketPercent ?></td>
-			
 		</tr>
     <?php } ?>
 	</tbody>
 </table>	
         <h2>My Items Sold</h2>
         
-			
+	</div>		
 	  <div class="demo_jui">
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="example2">
 	<thead>
@@ -145,10 +162,8 @@
 	<?php
 	while(list($id, $name, $damage, $time, $quantity, $price, $seller, $buyer)= mysql_fetch_row($queryMySales))
     { 
-		$marketPrice = getMarketPrice($name, $damage, $marketTimeMin);
+		$marketPrice = getMarketPrice($id, 3);
 		$timeFormat = date('jS M Y H:i:s', $time);
-		
-		$marketPrice = getMarketPrice($name, $damage, $marketTimeMin);
 		if ($marketPrice > 0)
 		{
 			$marketPercent = round((($price/$marketPrice)*100), 1);
@@ -177,12 +192,21 @@
     	
         <tr class="<?php echo $grade ?>">
 			<td><?php echo $timeFormat ?></td>
-			<td><a href="graph.php?name=<?php echo $name."&damage=".$damage ?>"><img src="<?php echo getItemImage($name, $damage) ?>" alt="<?php echo getItemName($name, $damage) ?>"/><br/><?php echo getItemName($name, $damage) ?></a></td>
+			<td><a href="graph.php?name=<?php echo $name."&damage=".$damage ?>"><img src="<?php echo getItemImage($name, $damage) ?>" alt="<?php echo getItemName($name, $damage) ?>"/><br/><?php echo getItemName($name, $damage); 
+			$queryEnchantLinks=mysql_query("SELECT enchId FROM WA_EnchantLinks WHERE itemId='$id' AND itemTableId=3");
+			while(list($enchId)= mysql_fetch_row($queryEnchantLinks))
+			{
+				$queryEnchants=mysql_query("SELECT * FROM WA_Enchantments WHERE id='$enchId'");
+				while(list($idj, $enchName, $enchantId, $level)= mysql_fetch_row($queryEnchants))
+				{
+					echo "<br/>".getEnchName($enchantId)." - Level: ".$level;
+				}
+			}
+			?></a></td>
 			<td><img width="32px" src="http://minotar.net/avatar/<?php echo $buyer ?>" /><br/><?php echo $buyer ?></td>
-          <td><?php echo $quantity ?></td>
-          <td class="center"><?php echo $price ?></td>
+			<td><?php echo $quantity ?></td>
+			<td class="center"><?php echo $price ?></td>
 			<td class="center"><?php echo $price*$quantity ?></td>
-			
 			<td class="center"><?php echo $marketPercent ?></td>
 		</tr>
     <?php } ?>
