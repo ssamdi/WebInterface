@@ -1016,7 +1016,7 @@
 						return "Cactus Green";
 						break;
 					case 3:
-						return "Coco Beans";
+						return "Cocoa Beans";
 						break;
 					case 4:
 						return "Lapis Lazuli";
