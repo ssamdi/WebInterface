@@ -39,6 +39,7 @@
 				if ($item->quantity >= $sellQuantity)
 				{
 					if ($isAdmin){
+						$item->changeQuantity(0 - $sellQuantity);
 						if ($chargeAdmins){
 							$itemFee = (($item->marketprice/100)*$auctionFee)*$sellQuantity;
 						}else{
