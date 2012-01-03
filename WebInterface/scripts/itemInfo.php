@@ -860,16 +860,16 @@
 				return "Leather Boots ".round(($itemDamage/40)*100, 1)."% damaged";
 				break;
 			case 302:
-				return "Chaimmail Helmet ".round(($itemDamage/67)*100, 1)."% damaged";
+				return "Chain Mail Helmet ".round(($itemDamage/67)*100, 1)."% damaged";
 				break;
 			case 303:
-				return "Chaimmail Chestplate ".round(($itemDamage/96)*100, 1)."% damaged";
+				return "Chain Mail Chestplate ".round(($itemDamage/96)*100, 1)."% damaged";
 				break;
 			case 304:
-				return "Chaimmail Leggings ".round(($itemDamage/92)*100, 1)."% damaged";
+				return "Chain Mail Leggings ".round(($itemDamage/92)*100, 1)."% damaged";
 				break;
 			case 305:
-				return "Chaimmail Boots ".round(($itemDamage/79)*100, 1)."% damaged";
+				return "Chain Mail Boots ".round(($itemDamage/79)*100, 1)."% damaged";
 				break;
 			case 306:
 				return "Iron Helmet ".round(($itemDamage/136)*100, 1)."% damaged";
