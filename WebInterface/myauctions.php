@@ -92,6 +92,11 @@ echo " (".getEnchName($enchantId)." - Level: ".$level.")";
 ?> (<?php echo $quantity ?>) (Average $<?php echo $marketPrice ?>)</option>
 <?php }?>
 </select><br />
+<p>
+<?php 
+	if($isAdmin){ echo "Enter 0 as the quantity for infinite stacks (admins only)"; } 
+?>
+</p>
 <label>Quantity</label><input name="Quantity" type="text" class="input" size="10" /><br />
 <label>Price (Per Item)</label><input name="Price" type="text" class="input" size="10" /><br />
 <label>&nbsp;</label><input name="Submit" type="submit" class="button" />
@@ -155,7 +160,13 @@ while(list($enchId)= mysql_fetch_row($queryEnchantLinks))
 	}
 }
 ?></a></td>
-<td><?php echo date('jS M Y H:i:s', $timeCreated + $auctionDurationSec); ?></td>
+<td><?php 
+if ($quantity == 0){
+	echo "Never";
+}else{
+	echo date('jS M Y H:i:s', $timeCreated + $auctionDurationSec); 
+}
+?></td>
 <td><?php echo $quantity ?></td>
 <td class="center"><?php echo $price ?></td>
 <td class="center"><?php echo $price*$quantity ?></td>

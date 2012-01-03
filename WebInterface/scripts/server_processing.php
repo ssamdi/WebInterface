@@ -2,6 +2,7 @@
     session_start();
     require 'config.php';
 	require 'itemInfo.php';
+	require 'jsonwrapper/jsonwrapper.php';
 	$isAdmin = $_SESSION['Admin'];
 	$canBuy = $_SESSION['canBuy'];
 	/*
@@ -174,8 +175,9 @@
 	while ( $aRow = mysql_fetch_array( $rResult ) )
 	{
 		$row = array();
+		$quantity = $aRow[ $aColumns[3] ];
 		$timeCreated = $aRow[ $aColumns[6] ];
-		if( time() < $timeCreated + $auctionDurationSec){
+		if((time() < $timeCreated + $auctionDurationSec)|| ($quantity == 0)){
 			$itemName = $aRow[ $aColumns[0] ];
 			$fullItemName = getItemName($aRow[ $aColumns[0] ], $aRow[ $aColumns[1] ]);
 			$itemDamage = $aRow[ $aColumns[1] ];
@@ -221,7 +223,11 @@
 				}
 			$row[] = "<a href='graph.php?name=".$aRow[ $aColumns[0] ]."&damage=".$aRow[ $aColumns[1] ]."'><img src=".getItemImage($aRow[ $aColumns[0] ], $aRow[ $aColumns[1] ])." alt=".$fullItemName."/><br/>".$fullItemName.$tempString."</a>";
 			$row[] = "<img width='32px' src='http://minotar.net/avatar/".$aRow[ $aColumns[2] ]."' /><br/>".$aRow[ $aColumns[2] ];
-			$row[] = date('jS M Y H:i:s', $timeCreated + $auctionDurationSec);
+			if ($quantity == 0){
+				$row[] = "Never";
+			}else{
+				$row[] = date('jS M Y H:i:s', $timeCreated + $auctionDurationSec);
+			}
 			$row[] = $aRow[ $aColumns[3] ];
 			$row[] = $aRow[ $aColumns[4] ];
 			$row[] = (((double)$aRow[ $aColumns[3] ])*((double)$aRow[ $aColumns[4] ]));

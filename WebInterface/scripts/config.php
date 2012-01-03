@@ -22,6 +22,7 @@ $cssFile = "main"; //will be collecting a list of cool css files, but "main" is 
 
 $auctionLength = 10; //days before auction is ended, and items returned to owner
 $auctionFee = 1; //% of the market price you are charged to auction the item
+$chargeAdmins = false; //whether web admins get charged fees
 
 /* Storage config */
 
