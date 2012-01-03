@@ -42,7 +42,7 @@
     $totalPrice = round($auction->price*$buyQuantity, 2);
 	$numberLeft = $auction->quantity-$buyQuantity;
 
-	if ($numberLeft < 0){
+	if (($numberLeft < 0)&&($auction->quantity > 0)){
         $_SESSION['error'] = "You are attempting to purchase more than the maximum available";
 		header("Location: ../index.php");
 	}
@@ -133,13 +133,14 @@
 					
 				}
 			}
-            if ($numberLeft != 0)
-            {
-			    $itemDelete = mysql_query("UPDATE WA_Auctions SET quantity='$numberLeft' WHERE id='$auction->id'");
-            }else{
-				$toDelete = true;
-                
-            }
+			if ($auction->quantity > 0){
+				if ($numberLeft != 0)
+				{
+					$itemDelete = mysql_query("UPDATE WA_Auctions SET quantity='$numberLeft' WHERE id='$auction->id'");
+				}else{
+					$toDelete = true;
+				}
+			}
 			$logPrice = mysql_query("INSERT INTO WA_SellPrice (name, damage, time, buyer, seller, quantity, price) VALUES ('$auction->name', '$auction->damage', '$timeNow', '$user', '$auction->owner', '$buyQuantity', '$auction->price')");
 			$queryLatestAuction = mysql_query("SELECT id FROM WA_SellPrice ORDER BY id DESC");
 			list($latestId)= mysql_fetch_row($queryLatestAuction);
