@@ -11,6 +11,9 @@
 	add_column_if_not_exist("WA_Players", "earnt", "DOUBLE NOT NULL DEFAULT  '0'");
 	add_column_if_not_exist("WA_Players", "spent", "DOUBLE NOT NULL DEFAULT  '0'");
 	add_column_if_not_exist("WA_Auctions", "created", "INT(11) NULL");
+	add_column_if_not_exist("WA_Auctions", "allowBids", "INT(1) NOT NULL DEFAULT '0'");
+	add_column_if_not_exist("WA_Auctions", "currentBid", "DOUBLE NULL");
+	add_column_if_not_exist("WA_Auctions", "currentWinner", "VARCHAR( 255 ) NULL");
 
 
 function add_column_if_not_exist($table, $column, $column_attr){

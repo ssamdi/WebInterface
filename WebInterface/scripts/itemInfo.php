@@ -1,4 +1,22 @@
 <?php
+	function itemAllowed ($itemId, $itemDamage)
+	{
+		switch ($itemId)
+		{
+			//Uncomment below to ban stone, dirt and cobblestone being sold.
+			/* 
+			case 1:
+			case 3:
+			case 4:
+				return false;
+				break;
+			*/
+			default: 
+				return true; 
+				break;
+		}
+	}
+
 	function isTrueDamage ($itemId, $itemDamage)
 	{
 		$baseDur = 0;

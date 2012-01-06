@@ -48,7 +48,6 @@
 ?>
       <h1>Web Auction</h1><br/>
       <h2>Item Info</h2>
-      </p> <!-- ??? -->
       <div class="demo_jui">
         <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
           <thead>

@@ -64,6 +64,9 @@
 	$marketItems = array();
 	$add = true;
 	while(list($id, $name, $sold, $bought, $earnt, $spent) = mysql_fetch_row($queryPlayers)) {
+	if (($earnt == 0) && ($spent == 0)){
+		//dont print that person to save space.
+	}else{
 		?>
 	
           <tr class="gradeC">
@@ -87,6 +90,7 @@
 			</td>
           </tr>
 <?php
+	}
 	}
 ?>
         </tbody>
