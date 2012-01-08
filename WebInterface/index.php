@@ -38,7 +38,7 @@
     <script type="text/javascript" language="javascript" src="js/inputfunc.js"></script>
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
-        oTable = $('#example').dataTable({
+        oTable = $('#mainTable').dataTable({
           "bProcessing"     : true,
           "bJQueryUI"       : true,
           "bStateSave"      : true,
@@ -71,7 +71,7 @@
 ?>
       </p>
       <div class="demo_jui">
-        <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="mainTable">
           <thead>
             <tr>
               <th>Item Info</th>

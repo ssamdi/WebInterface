@@ -48,14 +48,14 @@
 				$sellQuantity = round($sellQuantity);
 				if ($item->quantity >= $sellQuantity)
 				{
-					if ($isAdmin){
-						$item->changeQuantity(0 - $sellQuantity);
+					if ($isAdmin){						
 						if ($chargeAdmins){
 							$itemFee = (($item->marketprice/100)*$auctionFee)*$sellQuantity;
 						}else{
 							$itemFee = 0;
 						}
 						if ($player->money >= $itemFee){
+							$item->changeQuantity(0 - $sellQuantity);
 							$timeNow = time();
 							$player->spend($itemFee, $useMySQLiConomy, $iConTableName);
 							$itemQuery = mysql_query("INSERT INTO WA_Auctions (name, damage, player, quantity, price, created, allowBids, currentBid, currentWinner) VALUES ('$item->name', '$item->damage', '$item->owner', '$sellQuantity', '$sellPrice', '$timeNow', '$allowBids', '$minBid', '$item->owner')");
@@ -92,10 +92,10 @@
 						header("Location: ../myauctions.php");
 						}
 					}else{
-						if ($sellQuantity > 0){
-							$item->changeQuantity(0 - $sellQuantity);
+						if ($sellQuantity > 0){							
 							$itemFee = (($item->marketprice/100)*$auctionFee)*$sellQuantity;
 							if ($player->money >= $itemFee){
+								$item->changeQuantity(0 - $sellQuantity);
 								$timeNow = time();
 								$player->spend($itemFee, $useMySQLiConomy, $iConTableName);
 								$itemQuery = mysql_query("INSERT INTO WA_Auctions (name, damage, player, quantity, price, created, allowBids, currentBid, currentWinner) VALUES ('$item->name', '$item->damage', '$item->owner', '$sellQuantity', '$sellPrice', '$timeNow', '$allowBids', '$minBid', '$item->owner')");
