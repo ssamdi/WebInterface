@@ -75,7 +75,7 @@
 				}
 				if ($buyQuantity > 0)
 				{
-					$itemQuery = mysql_query("INSERT INTO WA_Mail (name, damage, player, quantity) VALUES '$auction->name', '$auction->damage', '$user', '$buyQuantity')");
+					$itemQuery = mysql_query("INSERT INTO WA_Mail (name, damage, player, quantity) VALUES ('$auction->name', '$auction->damage', '$user', '$buyQuantity')");
 					$queryLatestAuction = mysql_query("SELECT id FROM WA_Mail ORDER BY id DESC");
 					list($latestId)= mysql_fetch_row($queryLatestAuction);
 					$queryEnchantLinks=mysql_query("SELECT enchId FROM WA_EnchantLinks WHERE itemId='$auction->id' AND itemTableId=1"); 
