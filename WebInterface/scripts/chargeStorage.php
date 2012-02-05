@@ -31,7 +31,7 @@
 		}
 		foreach ($players as $p => $v) {
 			$account = new EconAccount($p, $useMySQLiConomy, $iConTableName);
-			$account->money = $account->money - $v;
+			$account->spend($v, $useMySQLiConomy, $iConTableName);
 		}
 		
 		//Stored in mail box
@@ -50,7 +50,7 @@
 		}
 		foreach ($players as $p => $v) {
 			$account = new EconAccount($p, $useMySQLiConomy, $iConTableName);
-			$account->money = $account->money - $v;
+			$account->spend($v, $useMySQLiConomy, $iConTableName);
 		}
 		$next = $now + (86400 / $numberOfChecksPerDay);
 		$insert = mysql_query("INSERT INTO WA_StorageCheck (time) VALUES ($next)");

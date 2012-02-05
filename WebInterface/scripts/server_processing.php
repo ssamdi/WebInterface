@@ -2,6 +2,7 @@
     session_start();
     require 'config.php';
 	require 'itemInfo.php';
+	require 'jsonwrapper/jsonwrapper.php';
 	$isAdmin = $_SESSION['Admin'];
 	$canBuy = $_SESSION['canBuy'];
 	/*
@@ -174,8 +175,9 @@
 	while ( $aRow = mysql_fetch_array( $rResult ) )
 	{
 		$row = array();
+		$quantity = $aRow[ $aColumns[3] ];
 		$timeCreated = $aRow[ $aColumns[6] ];
-		if( time() < $timeCreated + $auctionDurationSec){
+		if((time() < $timeCreated + $auctionDurationSec)|| ($quantity == 0)){
 			$itemName = $aRow[ $aColumns[0] ];
 			$fullItemName = getItemName($aRow[ $aColumns[0] ], $aRow[ $aColumns[1] ]);
 			$itemDamage = $aRow[ $aColumns[1] ];
@@ -221,7 +223,11 @@
 				}
 			$row[] = "<a href='graph.php?name=".$aRow[ $aColumns[0] ]."&damage=".$aRow[ $aColumns[1] ]."'><img src=".getItemImage($aRow[ $aColumns[0] ], $aRow[ $aColumns[1] ])." alt=".$fullItemName."/><br/>".$fullItemName.$tempString."</a>";
 			$row[] = "<img width='32px' src='http://minotar.net/avatar/".$aRow[ $aColumns[2] ]."' /><br/>".$aRow[ $aColumns[2] ];
-			$row[] = date('d/m/Y H:i:s', $timeCreated + $auctionDurationSec);
+			if ($quantity == 0){
+				$row[] = "Never";
+			}else{
+				$row[] = date('jS M Y H:i:s', $timeCreated + $auctionDurationSec);
+			}
 			$row[] = $aRow[ $aColumns[3] ];
 			$row[] = $aRow[ $aColumns[4] ];
 			$row[] = (((double)$aRow[ $aColumns[3] ])*((double)$aRow[ $aColumns[4] ]));
@@ -247,15 +253,33 @@
 			$foundItem = false;
 			$stackId = 0;
 			$stackQuant = 0;
+			$queryEnchantLinks = mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemId = '$id' AND itemTableId = '1'");
+			//return mysql_num_rows($queryEnchantLinks);
+			$itemEnchantsArray = array ();
+		
+			while(list($idt, $enchIdt, $itemTableIdt, $itemIdt)= mysql_fetch_row($queryEnchantLinks))
+			{  
+				$itemEnchantsArray[] = $enchIdt;
+			
+			}
 			while(list($pid, $pitemName, $pitemDamage, $pitemOwner, $pitemQuantity)= mysql_fetch_row($queryPlayerItems))
 			{	
 				if($itemName == $pitemName)
 				{
 					if ($pitemDamage == $itemDamage)
 					{
-						$foundItem = true;
-						$stackId = $pid;
-						$stackQuant = $pitemQuantity;
+						$queryEnchantLinksMarket = mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemTableId = '0' AND itemId = '$pid'");
+						$marketEnchantsArray = array ();
+						while(list($idt, $enchIdt, $itemTableIdt, $itemIdt)= mysql_fetch_row($queryEnchantLinksMarket))
+						{  
+							$marketEnchantsArray[] = $enchIdt;
+						}	
+						if((array_diff($itemEnchantsArray, $marketEnchantsArray) == null)&&(array_diff($marketEnchantsArray, $itemEnchantsArray) == null))
+						{
+							$foundItem = true;
+							$stackId = $pid;
+							$stackQuant = $pitemQuantity;
+						}
 					}
 				}
 			}
@@ -266,6 +290,14 @@
 			}else
 			{
 				$itemQuery = mysql_query("INSERT INTO WA_Items (name, damage, player, quantity) VALUES ('$itemName', '$itemDamage', '$user', '$itemQuantity')");
+				$queryLatestAuction = mysql_query("SELECT id FROM WA_Items ORDER BY id DESC");
+				list($latestId)= mysql_fetch_row($queryLatestAuction);
+					
+				$queryEnchants=mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemId='$id' AND itemTableId ='1'"); 
+				while(list($idk,$enchIdk, $tableIdk, $itemIdk)= mysql_fetch_row($queryEnchants))
+				{ 
+					$updateEnch = mysql_query("INSERT INTO WA_EnchantLinks (enchId, itemTableId, itemId) VALUES ('$enchIdk', '0', '$latestId')");
+				}
 			}
 			$itemDelete = mysql_query("DELETE FROM WA_Auctions WHERE id='$id'");
 		}

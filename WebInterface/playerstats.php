@@ -7,9 +7,8 @@
 	$user = $_SESSION['User'];
 	require 'scripts/config.php';
 	require 'scripts/itemInfo.php';
-	require_once 'classes/Market.php';
 	$isAdmin = $_SESSION['Admin'];
-	$queryAuctions = mysql_query("SELECT * FROM WA_Auctions");
+	$queryPlayers = mysql_query("SELECT id, name, itemsSold, itemsBought, earnt, spent FROM WA_Players");
 	if ($useMySQLiConomy) {
 		$queryiConomy = mysql_query("SELECT * FROM $iConTableName WHERE username='$user'");
 		$iConRow = mysql_fetch_row($queryiConomy);
@@ -47,64 +46,52 @@
 	include("topBoxes.php");
 ?>
       <h1>Web Auction</h1><br/>
-      <h2>Item Info</h2>
+      <h2>Player Stats</h2>
       <div class="demo_jui">
         <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
           <thead>
             <tr>
-              <th>Item</th>
-              <th>Number Sold</th>
-              <th>Market Price</th>
-              <th>Value Graph</th>
+              <th>Player</th>
+              <th>Items Sold</th>
+              <th>Item Bought</th>
+              <th>Money Gained</th>
+			  <th>Money Spent</th>
+			  <th>Total Profit</th>
             </tr>
           </thead>
           <tbody>
 <?php
 	$marketItems = array();
 	$add = true;
-	while(list($id, $name, $damage, $time, $price, $ref) = mysql_fetch_row($queryMarket)) {
-		$market = new Market($id);
-		foreach ($marketItems as $mar) {
-			if ($market->name == $mar->name){
-				if ($market->damage == $mar->damage){
-					if(count(array_diff($market->enchants, $mar->enchants)) ==0 ){
-						$add = false;						
-					}
-				}
-			}
-		}
-		if ($add == true){
-			$marketItems[] = $market;
-		//echo "<pre>";
-		//print_r($marketItems);
-		//echo "</pre>";
- 
+	while(list($id, $name, $sold, $bought, $earnt, $spent) = mysql_fetch_row($queryPlayers)) {
+	if (($earnt == 0) && ($spent == 0)){
+		//dont print that person to save space.
+	}else{
 		?>
 	
           <tr class="gradeC">
-            <td><a href="graph.php?name=<?php echo $market->name."&damage=".$market->damage ?>"><img src="<?php echo $market->image ?>" alt="<?php echo $market->fullname ?>"/><br/>
-			<?php 
-			echo $market->fullname;
-			foreach ($market->enchants as $ench) {
-				echo "<br/>".getEnchName($ench["name"])." - Level: ".$ench["level"];
-			}
-			?>
-			</a></td>
-            <td>
-<?php
-			echo $market->ref;
-?>
-            </td>
-            <td>
-<?php
-			echo round($market->price, 2);
-?>
-            </td>
-			<td><form action='graph.php' method='post'><input type='hidden' name='Name' value='<?php echo $market->name ?>' /><input type='hidden' name='Damage' value='<?php echo $market->damage ?>' /><input type='submit' value='View Graph' class='button' /></form>	
-			
+			<td>
+				<img width='32px' src='http://minotar.net/avatar/<?php echo $name; ?>' /><br/><?php echo $name; ?>
+			</td>
+			<td>
+				<?php echo $sold; ?>
+			</td>
+			<td>
+				<?php echo $bought; ?>
+			</td>
+			<td>
+				<?php echo $earnt; ?>
+			</td>
+			<td>
+				<?php echo $spent; ?>
+			</td>
+			<td>
+				<?php echo $earnt - $spent; ?>
+			</td>
           </tr>
 <?php
-	}}
+	}
+	}
 ?>
         </tbody>
       </table>

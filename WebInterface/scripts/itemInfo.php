@@ -1,4 +1,22 @@
 <?php
+	function itemAllowed ($itemId, $itemDamage)
+	{
+		switch ($itemId)
+		{
+			//Uncomment below to ban stone, dirt and cobblestone being sold.
+			/* 
+			case 1:
+			case 3:
+			case 4:
+				return false;
+				break;
+			*/
+			default: 
+				return true; 
+				break;
+		}
+	}
+
 	function isTrueDamage ($itemId, $itemDamage)
 	{
 		$baseDur = 0;
@@ -130,6 +148,8 @@
 		$itemRow = mysql_fetch_row($queryItem);
 		$itemId = $itemRow[1];
 		$itemDamage = $itemRow[2];
+		$foundIt = false;
+		$queryMarket = "";
 		//return $itemId;
 		$queryEnchantLinks = mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemId = '$itemTableId' AND itemTableId = '$tableId'");
 		//return mysql_num_rows($queryEnchantLinks);
@@ -144,12 +164,11 @@
 		
 		$base = isTrueDamage($itemId, $itemDamage);
 		if ($base > 0){
-			
 			if (mysql_num_rows($queryEnchantLinks) == 0){
 				$queryMarket1=mysql_query("SELECT * FROM WA_MarketPrices WHERE name='$itemId' AND damage='0' ORDER BY id DESC");
 				$maxId = -1;
 				$foundIt = false;
-				
+				//echo "first";
 				while(list($idm, $namem, $damagem, $timem, $pricem, $refm)= mysql_fetch_row($queryMarket1))
 				{
 					$queryMarket2 = mysql_query("SELECT * FROM WA_EnchantLinks WHERE itemId = '$idm' AND itemTableId = '4'");
@@ -168,6 +187,7 @@
 				$queryMarket1=mysql_query("SELECT * FROM WA_MarketPrices WHERE name='$itemId' AND damage='0' ORDER BY id DESC");
 				$maxId = -1;
 				$foundIt = false;
+				//echo "second";
 				while(list($idm, $namem, $damagem, $timem, $pricem, $refm)= mysql_fetch_row($queryMarket1))
 				{
 					$marketEnchantsArray = array ();
@@ -183,7 +203,7 @@
 						$maxId = $idm;
 						$foundIt = true;
 					}
-					
+					//print_r($itemEnchantsArray);
 				}
 				if ($foundIt){
 					$queryMarket=mysql_query("SELECT * FROM WA_MarketPrices WHERE id = '$maxId' ORDER BY id DESC");
@@ -192,9 +212,11 @@
 			}
 		}else{
 			$queryMarket=mysql_query("SELECT * FROM WA_MarketPrices WHERE name='$itemId' AND damage='$itemDamage' ORDER BY id DESC");
+			$foundIt = true;
 		}
-		if (!$queryMarket){
+		if ($foundIt==false){
 			//market price not found
+			//echo "cant find";
 			return 0;
 		}else{
 			//found get first item
@@ -206,6 +228,7 @@
 				$marketPrice = $rowMarket[4];
 			}
 			return round($marketPrice, 2);
+			
 		}
 	}
 	function getItemName($itemId, $itemDamage)
@@ -254,7 +277,7 @@
 				return "Lava";
 				break;
 			case 11:
-				return "Stationary Water";
+				return "Stationary Lava";
 				break;
 			case 12:
 				return "Sand";
@@ -578,7 +601,7 @@
 				return "Clay";
 				break;
 			case 83:
-				return "Sugar Cane";
+				return "Sugar Cane (Block)";
 				break;
 			case 84:
 				return "Jukebox";
@@ -855,16 +878,16 @@
 				return "Leather Boots ".round(($itemDamage/40)*100, 1)."% damaged";
 				break;
 			case 302:
-				return "Chaimmail Helmet ".round(($itemDamage/67)*100, 1)."% damaged";
+				return "Chain Mail Helmet ".round(($itemDamage/67)*100, 1)."% damaged";
 				break;
 			case 303:
-				return "Chaimmail Chestplate ".round(($itemDamage/96)*100, 1)."% damaged";
+				return "Chain Mail Chestplate ".round(($itemDamage/96)*100, 1)."% damaged";
 				break;
 			case 304:
-				return "Chaimmail Leggings ".round(($itemDamage/92)*100, 1)."% damaged";
+				return "Chain Mail Leggings ".round(($itemDamage/92)*100, 1)."% damaged";
 				break;
 			case 305:
-				return "Chaimmail Boots ".round(($itemDamage/79)*100, 1)."% damaged";
+				return "Chain Mail Boots ".round(($itemDamage/79)*100, 1)."% damaged";
 				break;
 			case 306:
 				return "Iron Helmet ".round(($itemDamage/136)*100, 1)."% damaged";
@@ -963,7 +986,7 @@
 				return "Clay Balls";
 				break;
 			case 338:
-				return "Sugarcane";
+				return "Sugar Cane";
 				break;
 			case 339:
 				return "Paper";
@@ -1011,7 +1034,7 @@
 						return "Cactus Green";
 						break;
 					case 3:
-						return "Coco Beans";
+						return "Cocoa Beans";
 						break;
 					case 4:
 						return "Lapis Lazuli";
@@ -1133,136 +1156,136 @@
 						return "Mundane Potion";
 						break;
 					case 8193:
-						return "Regeneration Potion (0.45)";
+						return "Regeneration Potion (0:45)";
 						break;
 					case 8194:
-						return "Swiftness Potion (3.00)";
+						return "Swiftness Potion (3:00)";
 						break;
 					case 8195:
-						return "Fire Resistance Potion (3.00)";
+						return "Fire Resistance Potion (3:00)";
 						break;
 					case 8196:
-						return "Poison Potion (0.45)";
+						return "Poison Potion (0:45)";
 						break;
 					case 8197:
 						return "Healing Potion";
 						break;
 					case 8200:
-						return "Weakness Potion (1.30)";
+						return "Weakness Potion (1:30)";
 						break;
 					case 8201:
-						return "Strength Potion (3.00)";
+						return "Strength Potion (3:00)";
 						break;
 					case 8202:
-						return "Slowness Potion (1.30)";
+						return "Slowness Potion (1:30)";
 						break;
 					case 8204:
 						return "Harming Potion";
 						break;
 					case 8225:
-						return "Regeneration Potion II (0.22)";
+						return "Regeneration Potion II (0:22)";
 						break;
 					case 8226:
-						return "Swiftness Potion II (1.30)";
+						return "Swiftness Potion II (1:30)";
 						break;
 					case 8228:
-						return "Poison Potion II (0.22)";
+						return "Poison Potion II (0:22)";
 						break;
 					case 8229:
 						return "Healing Potion II";
 						break;
 					case 8233:
-						return "Strength Potion II (1.30)";
+						return "Strength Potion II (1:30)";
 						break;
 					case 8236:
 						return "Harming Potion II";
 						break;
 					case 8257:
-						return "Regeneration Potion (2.00)";
+						return "Regeneration Potion (2:00)";
 						break;
 					case 8258:
-						return "Swiftness Potion (8.00)";
+						return "Swiftness Potion (8:00)";
 						break;
 					case 8259:
-						return "Fire Resistance Potion (8.00)";
+						return "Fire Resistance Potion (8:00)";
 						break;
 					case 8260:
-						return "Poison Potion (2.00)";
+						return "Poison Potion (2:00)";
 						break;
 					case 8264:
-						return "Weakness Potion (4.00)";
+						return "Weakness Potion (4:00)";
 						break;
 					case 8265:
-						return "Strength Potion (8.00)";
+						return "Strength Potion (8:00)";
 						break;
 					case 8266:
-						return "Slowness Potion (4.00)";
+						return "Slowness Potion (4:00)";
 						break;
 					case 16378:
-						return "Fire Resistance Splash (2.15)";
+						return "Fire Resistance Splash (2:15)";
 						break;
 					case 16385:
-						return "Regeneration Splash (0.33)";
+						return "Regeneration Splash (0:33)";
 						break;
 					case 16386:
-						return "Swiftness Splash (2.15)";
+						return "Swiftness Splash (2:15)";
 						break;
 					case 16388:
-						return "Poison Splash (0.33)";
+						return "Poison Splash (0:33)";
 						break;
 					case 16389:
 						return "Healing Splash";
 						break;
 					case 16392:
-						return "Weakness Splash (1.07)";
+						return "Weakness Splash (1:07)";
 						break;
 					case 16393:
-						return "Strength Splash (2.15)";
+						return "Strength Splash (2:15)";
 						break;
 					case 16394:
-						return "Slowness Splash (2.15)";
+						return "Slowness Splash (2:15)";
 						break;
 					case 16396:
 						return "Harming Splash";
 						break;
 					case 16418:
-						return "Swiftness Splash II (1.07)";
+						return "Swiftness Splash II (1:07)";
 						break;
 					case 16420:
-						return "Poison Splash II (0.16)";
+						return "Poison Splash II (0:16)";
 						break;
 					case 16421:
 						return "Healing Splash II";
 						break;
 					case 16425:
-						return "Strength Splash II (1.07)";
+						return "Strength Splash II (1:07)";
 						break;
 					case 16428:
 						return "Harming Splash II";
 						break;
 					case 16449:
-						return "Regeneration Splash (1.30)";
+						return "Regeneration Splash (1:30)";
 						break;
 					case 16450:
-						return "Swiftness Splash (6.00)";
+						return "Swiftness Splash (6:00)";
 						break;
 					case 16451:
-						return "Fire Resistance Splash (6.00)";
+						return "Fire Resistance Splash (6:00)";
 						break;
 					case 16452:
-						return "Poison Splash (1.30)";
+						return "Poison Splash (1:30)";
 						break;
 					case 16456:
-						return "Weakness Splash (3.00)";
+						return "Weakness Splash (3:00)";
 						break;
 					case 16457:
-						return "Strength Splash (6.00)";
+						return "Strength Splash (6:00)";
 						break;
 					case 16458:
-						return "Slowness Splash (3.00)";
+						return "Slowness Splash (3:00)";
 						break;
 					case 16471:
-						return "Regeneration Splash II (0.16)";
+						return "Regeneration Splash II (0:16)";
 						break;
 					default:
 						return "Clear Potion";
@@ -2531,64 +2554,172 @@
 				break;
 		}
 	}
-	function getItemMaxStack($itemId, $itemDamage)
-	{
-		if ($itemId < 200)
-		{
+	function getItemMaxStack($itemId) {
+	switch($itemId) {
+		case 63:
+			return 1;
+		case 68:
+			return 1;
+		case 92:
+			return 1;
+		case 256:
+			return 1;
+		case 257:
+			return 1;
+		case 258:
+			return 1;
+		case 259:
+			return 1;
+		case 261:
+			return 1;
+		case 267:
+			return 1;
+		case 268:
+			return 1;
+		case 269:
+			return 1;
+		case 270:
+			return 1;
+		case 271:
+			return 1;
+		case 272:
+			return 1;
+		case 273:
+			return 1;
+		case 274:
+			return 1;
+		case 275:
+			return 1;
+		case 276:
+			return 1;
+		case 277:
+			return 1;
+		case 278:
+			return 1;
+		case 279:
+			return 1;
+		case 282:
+			return 1;
+		case 283:
+			return 1;
+		case 284:
+			return 1;
+		case 285:
+			return 1;
+		case 286:
+			return 1;
+		case 290:
+			return 1;
+		case 291:
+			return 1;
+		case 292:
+			return 1;
+		case 293:
+			return 1;
+		case 294:
+			return 1;
+		case 298:
+			return 1;
+		case 299:
+			return 1;
+		case 300:
+			return 1;
+		case 301:
+			return 1;
+		case 302:
+			return 1;
+		case 303:
+			return 1;
+		case 304:
+			return 1;
+		case 305:
+			return 1;
+		case 306:
+			return 1;
+		case 307:
+			return 1;
+		case 308:
+			return 1;
+		case 309:
+			return 1;
+		case 310:
+			return 1;
+		case 311:
+			return 1;
+		case 312:
+			return 1;
+		case 313:
+			return 1;
+		case 314:
+			return 1;
+		case 315:
+			return 1;
+		case 316:
+			return 1;
+		case 317:
+			return 1;
+		case 323:
+			return 1;
+		case 324:
+			return 1;
+		case 325:
+			return 1;
+		case 326:
+			return 1;
+		case 327:
+			return 1;
+		case 328:
+			return 1;
+		case 329:
+			return 1;
+		case 330:
+			return 1;
+		case 332:
+			return 16;
+		case 333:
+			return 1;
+		case 335:
+			return 1;
+		case 342:
+			return 1;
+		case 343:
+			return 1;
+		case 344:
+			return 16;
+		case 346:
+			return 1;
+		case 354:
+			return 1;
+		case 355:
+			return 1;
+		case 358:
+			return 1;
+		case 359:
+			return 1;
+		case 2256:
+			return 1;
+		case 2257:
+			return 1;
+		case 2258:
+			return 1;
+		case 2259:
+			return 1;
+		case 2260:
+			return 1;
+		case 2261:
+			return 1;
+		case 2262:
+			return 1;
+		case 2263:
+			return 1;
+		case 2264:
+			return 1;
+		case 2265:
+			return 1;
+		case 2266:
+			return 1;
+		default:
 			return 64;
-		}
-			
-			
-		switch($itemId)
-		{		
-			case 262:
-			case 263:
-			case 264:
-			case 265:
-			case 266:
-			case 280:
-			case 287:
-			case 288:
-			case 289:
-			case 295:
-			case 296:
-			case 297:
-			case 318:
-			case 319:
-			case 320:
-			case 321:
-			case 331:
-			case 334:
-			case 336:
-			case 337:
-			case 338:
-			case 339:
-			case 341:	
-			case 348:
-			case 349:
-			case 350:
-			case 351:
-			case 352:
-			case 353:
-			case 356:
-			case 357:
-			case 360:
-			case 361:
-			case 362:
-			case 363:
-			case 364:
-			case 365:
-			case 367:			
-				return 64;
-				break;
-			case 332:
-			case 344:
-			case 368:
-				return 16;
-				break;
-			default:
-				return 1;
-				break;		
-		}
 	}
+}
 ?>
