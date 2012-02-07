@@ -18,8 +18,7 @@ class Market
         $this->id = $marketRow->id;
 		$this->name = $marketRow->name;
 		$this->damage = $marketRow->damage;
-		$this->price = $auctionRow->price;
-		$this->time = $auctionRow->time;
+		$this->time = $marketRow->time;
 		$this->price = $marketRow->marketprice;
 		$this->fullname = getItemName($this->name, $this->damage);
 		$this->image = getItemImage($this->name, $this->damage);
