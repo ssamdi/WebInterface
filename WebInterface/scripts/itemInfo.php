@@ -317,6 +317,12 @@
 					case 2:
 						return "Birchwood Leaves";
 						break;
+					case 5:
+						return "Redwood Leaves";
+						break;
+					case 6:
+						return "Birchwood Leaves";
+						break;
 					default:
 						return "Leaves";
 						break;
@@ -1441,6 +1447,12 @@
 						return "images/Grid_Leaves_%28Pine%29.png";
 						break;
 					case 2:
+						return "images/Grid_Leaves_%28Birch%29.png";
+						break;
+					case 5:
+						return "images/Grid_Leaves_%28Pine%29.png";
+						break;
+					case 6:
 						return "images/Grid_Leaves_%28Birch%29.png";
 						break;
 					default:
