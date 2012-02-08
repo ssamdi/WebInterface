@@ -317,6 +317,12 @@
 					case 2:
 						return "Birchwood Leaves";
 						break;
+					case 5:
+						return "Redwood Leaves";
+						break;
+					case 6:
+						return "Birchwood Leaves";
+						break;
 					default:
 						return "Leaves";
 						break;
@@ -1353,6 +1359,7 @@
 				return "Music Disc (11)";
 				break;
 			default:
+				// TODO: Return "Unknown (id:value)" instead?
 				return "air";
 				break;		
 		}
@@ -1441,6 +1448,12 @@
 						return "images/Grid_Leaves_%28Pine%29.png";
 						break;
 					case 2:
+						return "images/Grid_Leaves_%28Birch%29.png";
+						break;
+					case 5:
+						return "images/Grid_Leaves_%28Pine%29.png";
+						break;
+					case 6:
 						return "images/Grid_Leaves_%28Birch%29.png";
 						break;
 					default:
@@ -1587,8 +1600,7 @@
 				return "images/Grid_Iron_%28Block%29.png";
 				break;
 			case 43:
-				return "images/Grid_Double_Stone_Slab.png";
-				break;
+				// TODO: add double slab pictures
 				switch ($itemDamage)
 				{
 					case 1:
@@ -1601,7 +1613,7 @@
 						return "Double Cobblestone Slab";
 						break;
 					default:
-						return "Double Stone Slab";
+						return "images/Grid_Double_Stone_Slab.png";
 						break;
 				}
 				break;
@@ -1665,6 +1677,7 @@
 				return "images/Grid_Crafting_Table.png";
 				break;
 			case 59:
+				// TODO: add crop picture(s)
 				return "Crops";
 				break;
 			case 60:
@@ -1761,7 +1774,7 @@
 				return "images/Grid_Portal.png";
 				break;
 			case 91:
-				return "images/a/ac/Grid_Jack-O-Lantern.png";
+				return "images/Grid_Jack-O-Lantern.png";
 				break;
 			case 92:
 				return "images/Grid_Cake.png";
@@ -1782,7 +1795,6 @@
 				return "images/Stone.png"; // Hidden Silverfish
 				break;
 			case 98:
-				return "images/Grid_Stone_Brick.png";
 				switch ($itemDamage)
 				{
 					case 1:
@@ -1812,6 +1824,7 @@
 				return "images/Grid_Melon_%28Block%29.png";
 				break;
 			case 104:
+				// TODO: add pumpkin and melon steam pictures
 				return "Pumpkin Stem";
 				break;
 			case 105:
@@ -2490,6 +2503,7 @@
 				return "images/Grid_11_Disc.png";
 				break;
 			default:
+				// TODO: Add a default image for unknown blocks?
 				return "air";
 				break;		
 		}
