@@ -1599,8 +1599,6 @@
 				return "images/Grid_Iron_%28Block%29.png";
 				break;
 			case 43:
-				return "images/Grid_Double_Stone_Slab.png";
-				break;
 				switch ($itemDamage)
 				{
 					case 1:
@@ -1794,7 +1792,6 @@
 				return "images/Stone.png"; // Hidden Silverfish
 				break;
 			case 98:
-				return "images/Grid_Stone_Brick.png";
 				switch ($itemDamage)
 				{
 					case 1:
