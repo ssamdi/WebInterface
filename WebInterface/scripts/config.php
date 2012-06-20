@@ -3,10 +3,10 @@
 
 /* Database config */
 
-$db_host		= 'mywebsite.com'; //change these!!
-$db_user		= 'username';//change these!!
-$db_pass		= 'password1234';//change these!!
-$db_database	= 'minecraft'; //change these!!
+$db_host		= 'simond.wk.to'; //change these!!
+$db_user		= 'simond';//change these!!
+$db_pass		= 'qweqwe';//change these!!
+$db_database	= 'simond'; //change these!!
 
 /* Market Price config */
 
