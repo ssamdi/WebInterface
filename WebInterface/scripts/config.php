@@ -3,7 +3,7 @@
 
 /* Database config */
 
-$db_host		= 'simond.wk.to'; //change these!!
+$db_host		= 'simondhero.com'; //change these!!
 $db_user		= 'simond';//change these!!
 $db_pass		= 'qweqwe';//change these!!
 $db_database	= 'simond'; //change these!!
